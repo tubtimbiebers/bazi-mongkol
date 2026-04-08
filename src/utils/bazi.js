@@ -265,9 +265,6 @@ export function calculateBazi({ day, mon, yrBE, hr, mi, gdr }) {
   const sartBigJD = ex2jd(sartBigEx);
   const sartSmlJD = ex2jd(sartSmlEx);
 
-  const diffDays = Math.abs(sartBigEx - exBirth);
-  const startAge = diffDays / 3;
-
   const yp = yearPillar(yr, L);
   const mp = monthPillar(mon, L, yp.stem);
   const dp = dayPillar(yr, mon, day, hr);
@@ -275,6 +272,23 @@ export function calculateBazi({ day, mon, yrBE, hr, mi, gdr }) {
 
   const yearYin = yp.stem % 2 === 0;
   const dir     = gdr === 1 ? (yearYin ? -1 : 1) : (yearYin ? 1 : -1);
+
+  // Vayjorn start age calculation
+  const prevJie = (Math.floor((L * 360 - 15) / 30) * 30 + 15) / 360;
+  const nextJie = prevJie + 30 / 360;
+  const targetJieLam = dir === 1 ? nextJie : prevJie;
+  
+  // Refine exact Excel serial of the target Jie using iteration
+  let targetJieEx = exBirth;
+  for(let i = 0; i < 6; i++) {
+    let currentL = computeL(targetJieEx);
+    let diff = targetJieLam - currentL;
+    diff = diff - Math.round(diff); // Handle 360-degree wrap-around
+    targetJieEx += diff * 365.2422;
+  }
+  
+  const diffDays = Math.abs(targetJieEx - exBirth);
+  const startAge = diffDays / 3;
 
   const periods = vayjorn(mp.stem, mp.branch, dir, startAge);
   const nowBE   = new Date().getFullYear() + 543;
