@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ปาจื้อ ซาจู ดวงมงคล</title>
+<style>
+/* System fonts - works offline on iPad/iPhone */
+@font-face{font-family:'CinzelFallback';src:local('Palatino'),local('Georgia'),local('serif')}
+</style>
+<style>
+:root{
+  --gold:#d4a843;--gold-l:#f0cc6a;--gold-d:#a07828;
+  --red:#8b1a1a;--ink:#1a0000;--paper:#fdf5e4;
+  --bg-main:#3d0000;--bg-card:rgba(255,255,255,0.04);
+  --border-gold:rgba(212,168,67,0.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#2a0000;color:var(--paper);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(180,20,20,0.6),transparent 55%),
+    radial-gradient(ellipse at 80% 90%,rgba(100,0,0,0.7),transparent 55%),
+    radial-gradient(ellipse at 50% 50%,rgba(60,0,0,0.3),transparent 70%),
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(212,168,67,.018) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(212,168,67,.018) 60px)}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:16px 20px 40px;background:rgba(40,0,0,.15);}
+
+/* HEADER */
+header{text-align:center;padding:32px 0 24px;position:relative}
+.orn{color:var(--gold-l);letter-spacing:8px;opacity:.75;font-size:1.1rem}
+h1{font-family:Georgia,'Palatino Linotype',serif;font-size:clamp(1.3rem,4vw,2.1rem);
+   color:var(--gold-l);text-shadow:0 2px 24px rgba(212,168,67,.6),0 0 60px rgba(212,168,67,.2);letter-spacing:3px;margin:5px 0 3px}
+.h1th{font-family:Georgia,'Times New Roman',serif;font-size:clamp(.9rem,2.5vw,1.25rem);color:var(--gold);opacity:.85;letter-spacing:4px;margin-bottom:5px}
+.hline{width:160px;height:1px;margin:8px auto;background:linear-gradient(90deg,transparent,var(--gold-l),transparent)}
+
+/* INPUT PANEL */
+.panel{background:linear-gradient(135deg,rgba(245,237,216,.06),rgba(212,168,67,.04));
+  border:1px solid rgba(212,168,67,.35);border-radius:4px;padding:20px 24px 16px;margin-bottom:20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.panel::before{content:'ใส่ข้อมูลวันเกิด';position:absolute;top:-11px;left:20px;
+  background:#2a0000;color:var(--gold-l);font-family:Georgia,'Palatino Linotype',serif;
+  font-size:.68rem;padding:1px 9px;border:1px solid rgba(212,168,67,.35)}
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px 16px;margin-bottom:14px}
+.ig label{display:block;font-size:.7rem;color:var(--gold);margin-bottom:3px;letter-spacing:1px;font-family:Georgia,'Times New Roman',serif}
+.ig input,.ig select{width:100%;padding:7px 10px;background:rgba(0,0,0,.4);
+  border:1px solid rgba(212,168,67,.28);border-radius:2px;color:var(--paper);
+  font-family:'Helvetica Neue',Arial,sans-serif;font-size:.88rem;transition:border-color .18s}
+.ig input:focus,.ig select:focus{outline:none;border-color:var(--gold)}
+.ig select option{background:#2a0000}
+.btn{display:block;width:100%;max-width:250px;margin:0 auto;padding:10px 26px;cursor:pointer;
+  font-family:Georgia,'Times New Roman',serif;font-weight:600;font-size:.92rem;letter-spacing:2px;
+  color:var(--ink);background:linear-gradient(135deg,var(--gold-l),var(--gold),var(--gold-d));
+  border:none;border-radius:2px;
+  box-shadow:0 3px 12px rgba(212,168,67,.28),inset 0 1px 0 rgba(255,255,255,.18);transition:all .18s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(212,168,67,.38)}
+
+/* RESULTS */
+#results{display:none;animation:fi .35s ease}
+@keyframes fi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.errmsg{color:#e05c5c;padding:12px;background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.28);
+  border-radius:3px;font-family:Georgia,'Times New Roman',serif;text-align:center}
+
+/* SECTION LABEL */
+.sec{font-family:Georgia,'Times New Roman',serif;font-size:.73rem;color:var(--gold);letter-spacing:3px;
+  margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(212,168,67,.4),transparent)}
+.div{text-align:center;color:var(--gold);opacity:.3;letter-spacing:5px;font-size:.72rem;margin:12px 0}
+
+/* ── 4-PILLAR CHART ── */
+.pgrid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:18px}
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(72px,1fr));gap:4px;min-width:300px}
+/* Scale down on small screens but NEVER wrap to fewer columns */
+@media(max-width:600px){
+  .pgrid{gap:3px;min-width:280px}
+  .pl-hd{font-size:.52rem;padding:3px 2px;letter-spacing:0}
+  .pl-hs{padding:6px 2px 5px}
+  .pl-hs .cn{font-size:1.15rem}
+  .pl-hs .th{font-size:.52rem}
+  .pl-hs .el{font-size:.46rem}
+  .pl-eb{padding:6px 2px 5px}
+  .pl-eb .cn{font-size:1rem}
+  .pl-eb .th{font-size:.52rem}
+  .pl-eb .an{font-size:.46rem}
+  .hid-row{padding:1px 2px}
+  .hid-row span{font-size:.62rem!important}
+  .pl-js{font-size:.46rem;padding:4px 2px}
+  .wrap{padding:8px 6px 28px}
+}
+
+.pillar{background:linear-gradient(180deg,rgba(212,168,67,.1),rgba(0,0,0,.45));
+  border:1px solid rgba(212,168,67,.2);border-radius:3px;overflow:hidden}
+.pl-hd{text-align:center;padding:4px 3px;background:rgba(212,168,67,.1);
+  border-bottom:1px solid rgba(212,168,67,.16);font-size:.65rem;color:var(--gold);
+  letter-spacing:1px;font-family:Georgia,'Times New Roman',serif}
+.pl-hs{padding:11px 5px 9px;text-align:center;border-bottom:1px solid rgba(212,168,67,.1)}
+.pl-hs .cn{font-size:1.9rem;line-height:1;display:block;text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.pl-hs .th{font-family:Georgia,'Times New Roman',serif;font-size:.7rem;opacity:.8;margin-top:2px;display:block}
+.pl-hs .el{font-size:.6rem;opacity:.5;letter-spacing:.5px;display:block;margin-top:1px}
+.pl-eb{padding:11px 5px 9px;text-align:center;border-bottom:1px solid rgba(212,168,67,.07)}
+.pl-eb .cn{font-size:1.6rem;line-height:1;display:block}
+.pl-eb .th{font-family:Georgia,'Times New Roman',serif;font-size:.68rem;display:block;margin-top:2px}
+.pl-eb .an{font-size:.6rem;opacity:.5;display:block;margin-top:1px}
+.pl-hid{padding:5px 4px;text-align:center;background:rgba(0,0,0,.18);
+  font-size:.6rem;color:var(--paper);opacity:.58;min-height:28px;line-height:1.55}
+.pl-js{padding:4px 4px;text-align:center;background:rgba(212,168,67,.04);
+  border-top:1px dashed rgba(212,168,67,.1);font-size:.6rem;color:var(--gold-l);min-height:22px}
+.hid-row{display:flex;align-items:center;padding:2px 0;font-family:'Noto Serif Thai',sans-serif;color:var(--paper)}
+
+/* ELEMENT COLORS */
+.ew{color:#72c96b}.ew2{color:#4ea847}
+.ef{color:#e06060}.ef2{color:#c03030}
+.ed{color:#c9a44a}.ed2{color:#a8832e}
+.em{color:#aabcce}.em2{color:#7a8fa8}
+.en{color:#6aaddb}.en2{color:#3a7db8}
+
+/* ── INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:9px;margin-bottom:16px}
+.icard{background:rgba(255,255,255,.04);border:1px solid rgba(212,168,67,.2);border-radius:3px;padding:12px 14px}
+.icard h4{font-family:Georgia,'Times New Roman',serif;font-size:.68rem;color:var(--gold);letter-spacing:2px;
+  margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(212,168,67,.12)}
+.irow{display:flex;justify-content:space-between;align-items:flex-start;
+  padding:3px 0;font-size:.78rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.irow:last-child{border-bottom:none}
+.ilbl{color:var(--paper);opacity:.48;flex-shrink:0;margin-right:6px}
+.ival{font-family:Georgia,'Times New Roman',serif;text-align:right}
+.hi{color:var(--gold-l)}
+
+
+/* ── PROMPT GENERATOR ── */
+.prompt-sec{margin-bottom:24px}
+.prompt-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.ptab{padding:7px 16px;border:1px solid rgba(212,168,67,.3);background:rgba(212,168,67,.06);
+  color:var(--gold);font-family:Georgia,'Times New Roman',serif;font-size:.75rem;letter-spacing:1px;
+  border-radius:2px;cursor:pointer;transition:all .18s}
+.ptab.active,.ptab:hover{background:rgba(212,168,67,.18);border-color:var(--gold)}
+.pblock{display:none}
+.pblock.show{display:block}
+.pbox{background:rgba(0,0,0,.5);border:1px solid rgba(212,168,67,.25);border-radius:3px;
+  padding:14px 16px;font-size:.78rem;line-height:1.75;color:var(--paper);
+  font-family:'Helvetica Neue',Arial,sans-serif;white-space:pre-wrap;max-height:320px;overflow-y:auto;
+  margin-bottom:8px}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;
+  background:linear-gradient(135deg,var(--gold-l),var(--gold));
+  color:var(--ink);border:none;border-radius:2px;font-family:Georgia,'Times New Roman',serif;
+  font-size:.78rem;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all .18s}
+.copy-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(212,168,67,.3)}
+.copy-btn.copied{background:linear-gradient(135deg,#6dbf67,#4ea847);color:#fff}
+
+
+
+
+
+/* ── HOW TO USE ── */
+.howto{background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(0,0,0,.3));
+  border:1px solid rgba(212,168,67,.3);border-radius:4px;padding:16px 20px;margin-bottom:14px}
+.howto-title{font-family:Georgia,serif;font-size:.8rem;color:var(--gold-l);
+  letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.howto-title::before{content:'';display:inline-block;width:16px;height:1px;background:var(--gold);opacity:.5}
+.howto-title::after{content:'';display:inline-block;width:16px;height:1px;background:var(--gold);opacity:.5}
+.howto-steps{display:flex;flex-direction:column;gap:7px}
+.howto-step{display:flex;align-items:flex-start;gap:10px;font-size:.8rem;
+  font-family:Georgia,serif;color:var(--paper);line-height:1.55}
+.howto-num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold-l),var(--gold));
+  color:#1a0000;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px}
+.howto-step .hl{color:var(--gold-l);font-weight:600}
+.howto-step .dim{opacity:.6;font-size:.74rem}
+
+
+/* ── ZODIAC TABLE ── */
+.zodiac-wrap{margin-bottom:16px}
+.zodiac-row-label{font-size:.62rem;color:rgba(212,168,67,.65);letter-spacing:2px;margin-bottom:3px;font-family:Georgia,'Times New Roman',serif}
+.zodiac-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:6px}
+.zod{border-radius:4px;padding:7px 4px 6px;text-align:center;cursor:default;transition:transform .15s}
+.zod:hover{transform:scale(1.04)}
+.zod .zcn{font-size:1.1rem;display:block;line-height:1.2}
+.zod .zth{font-family:Georgia,'Times New Roman',serif;font-size:.78rem;font-weight:600;display:block;margin-top:2px}
+.zod .zan{font-size:.58rem;opacity:.7;display:block;margin-top:1px;letter-spacing:.5px}
+.zod .zbadge{font-size:.5rem;display:block;margin-top:2px}
+
+@keyframes goldpulse{
+  0%,100%{box-shadow:0 4px 20px rgba(212,168,67,.55),0 0 40px rgba(212,168,67,.2),inset 0 1px 0 rgba(255,255,255,.4)}
+  50%{box-shadow:0 6px 28px rgba(212,168,67,.8),0 0 60px rgba(212,168,67,.35),inset 0 1px 0 rgba(255,255,255,.4)}
+}
+/* ── VAYJORN TABLE ── */
+.vt-wrap{overflow-x:auto;margin-bottom:20px;border:1px solid rgba(212,168,67,.18);border-radius:3px}
+table.vt{width:100%;border-collapse:collapse;font-size:.76rem;min-width:600px}
+table.vt th{padding:8px 8px;background:rgba(212,168,67,.15);border-bottom:2px solid rgba(212,168,67,.35);
+  border-right:1px solid rgba(212,168,67,.12);color:var(--gold);
+  font-family:Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.5px;text-align:center;white-space:nowrap}
+table.vt td{padding:7px 8px;border-bottom:1px solid rgba(212,168,67,.09);
+  border-right:1px solid rgba(212,168,67,.07);text-align:center;font-family:Georgia,'Times New Roman',serif}
+table.vt tr:nth-child(even) td{background:rgba(212,168,67,.04)}
+table.vt tr.now td{background:rgba(212,168,67,.18)}
+table.vt tr.now td:first-child{border-left:3px solid var(--gold)}
+.vt-cn{font-size:1.05rem;display:block;line-height:1.1}
+.vt-th{font-size:.65rem;opacity:.75;display:block;margin-top:1px}
+.vt-age{color:var(--gold-l);font-weight:600;font-size:.82rem}
+.vt-yr{font-size:.62rem;opacity:.48;display:block;margin-top:1px}
+.vt-js{font-size:.7rem}
+.vt-jscn{font-size:.6rem;opacity:.55;display:block}
+
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="orn">✦ ✦ ✦</div>
+  <div class="h1th">ปาจื้อ ซาจู</div>
+  <h1>ดวงมงคล</h1>
+  <div class="orn" style="font-size:.85rem">八 字 命 盤</div>
+  <div class="hline"></div>
+  <div style="margin-top:10px;font-family:Georgia,serif">
+    <div style="font-size:clamp(.85rem,2.5vw,1.1rem);color:var(--gold-l);letter-spacing:1px">โดย <span style="color:#fff;font-weight:600">ซินแสนัท</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:10px">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 18px;border:1px solid rgba(212,168,67,.4);border-radius:20px">
+        <span style="font-size:clamp(.72rem,2vw,.88rem);color:var(--gold);letter-spacing:1.5px">📞 086-987-4656</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:7px;padding:5px 18px;border:1px solid rgba(212,168,67,.4);border-radius:20px">
+        <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="12" fill="#06C755"/>
+          <path d="M24 8C15.16 8 8 14.28 8 22c0 4.94 2.94 9.28 7.38 11.96L14 40l6.44-3.38C21.54 36.86 22.76 37 24 37c8.84 0 16-6.28 16-14S32.84 8 24 8z" fill="white"/>
+          <path d="M17 24.5v-5h1.5v5H17zm3.5 0v-5H22v2h2v1.5h-2v1.5h-1.5zm4 0v-5H26c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-1.5zm1.5-3.5v2h.5c.28 0 .5-.22.5-.5v-1c0-.28-.22-.5-.5-.5H26zm3 3.5v-5h3.5V21H30v1h2v1.5h-2v1h2.5v1.5H30z" fill="#06C755"/>
+        </svg>
+        <span style="font-size:clamp(.72rem,2vw,.88rem);color:var(--gold);letter-spacing:1.5px">Line: @Royalnumber789</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donation box — small, right side, no overlap -->
+  <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);
+              border:1px solid rgba(212,168,67,.3);border-radius:5px;
+              padding:8px 12px;background:rgba(20,0,0,.6);
+              text-align:center;width:150px;font-family:Georgia,serif;
+              font-size:.62rem;line-height:1.6">
+    <div style="color:var(--gold);letter-spacing:1px;margin-bottom:4px;font-size:.63rem">🙏 ร่วมสนับสนุน</div>
+    <div style="color:var(--paper);opacity:.8;margin-bottom:4px">ถ้าชอบ อยากร่วมสนับสนุนตามศรัทธา</div>
+    <div style="height:1px;background:rgba(212,168,67,.25);margin:5px 0"></div>
+    <div style="color:var(--gold-l);font-size:.6rem">ธนาคารไทยพาณิชย์</div>
+    <div style="color:#fff;font-weight:700;letter-spacing:1.5px;font-size:.75rem;margin:2px 0">095-273-6537</div>
+    <div style="color:var(--paper);opacity:.55;font-size:.58rem">นายฐเดช ทับทิมรณยุทธ</div>
+    <div style="color:var(--gold);opacity:.5;font-size:.58rem;margin-top:3px">ขอบพระคุณครับ 🙏</div>
+  </div>
+
+</header>
+
+<div class="panel">
+  <div class="igrid">
+    <div class="ig"><label>วัน</label><input type="number" id="dd" min="1" max="31" value="8" oninput="updateDayMax()"></div>
+    <div class="ig"><label>เดือน</label><input type="number" id="mm" min="1" max="12" value="2" oninput="updateDayMax()"></div>
+    <div class="ig"><label>ปี พ.ศ.</label><input type="number" id="yy" min="2443" max="2643" value="2512" oninput="updateDayMax()"></div>
+    <div class="ig"><label>ชั่วโมง</label><input type="number" id="hh" min="0" max="23" value="9"></div>
+    <div class="ig"><label>นาที</label><input type="number" id="mn" min="0" max="59" value="54"></div>
+    <div class="ig"><label>เพศ</label>
+      <select id="gd"><option value="1">ชาย</option><option value="2">หญิง</option></select>
+    </div>
+  </div>
+  <button class="btn" onclick="calc()">⊕ คำนวณดวงชะตา</button>
+</div>
+<div style="font-family:Georgia,serif;font-size:.72rem;color:rgba(212,168,67,.6);margin-top:6px;letter-spacing:.5px">* ไม่ทราบเวลาเกิด ให้ใส่ 00.00</div>
+
+<div id="results">
+  <div id="err" class="errmsg" style="display:none"></div>
+  <div id="out"></div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  LOOKUP TABLES — verified against Excel BAZI_Date_Selection168_V1
+// ═══════════════════════════════════════════════════════
+const H={
+  1:{th:'กะ',   el:'ไม้+',cn:'甲',c:'ew'},  2:{th:'อิก',  el:'ไม้-',cn:'乙',c:'ew2'},
+  3:{th:'เปี้ย',el:'ไฟ+',cn:'丙',c:'ef'},  4:{th:'เต็ง', el:'ไฟ-',cn:'丁',c:'ef2'},
+  5:{th:'โบ่ว', el:'ดิน+',cn:'戊',c:'ed'}, 6:{th:'กี้',  el:'ดิน-',cn:'己',c:'ed2'},
+  7:{th:'แก',   el:'ทอง+',cn:'庚',c:'em'}, 8:{th:'ซิง',  el:'ทอง-',cn:'辛',c:'em2'},
+  9:{th:'หยิ่ม',el:'น้ำ+',cn:'壬',c:'en'},10:{th:'กุ่ย', el:'น้ำ-',cn:'癸',c:'en2'}
+};
+const E={
+  1:{th:'จื้อ', an:'ชวด',  el:'น้ำ+',cn:'子',c:'en'},
+  2:{th:'ทิ่ว', an:'ฉลู',  el:'ดิน-',cn:'丑',c:'ed2'},
+  3:{th:'อิ๊ง', an:'ขาล',  el:'ไม้+',cn:'寅',c:'ew'},
+  4:{th:'เบ้า', an:'เถาะ', el:'ไม้-',cn:'卯',c:'ew2'},
+  5:{th:'ซิ้ง', an:'มะโรง',el:'ดิน+',cn:'辰',c:'ed'},
+  6:{th:'จี๋',  an:'มะเส็ง',el:'ไฟ-',cn:'巳',c:'ef2'},
+  7:{th:'โง่ว', an:'มะเมีย',el:'ไฟ+',cn:'午',c:'ef'},
+  8:{th:'บี่',  an:'มะแม', el:'ดิน-',cn:'未',c:'ed2'},
+  9:{th:'ซิม',  an:'วอก',  el:'ทอง+',cn:'申',c:'em'},
+ 10:{th:'อิ้ว', an:'ระกา', el:'ทอง-',cn:'酉',c:'em2'},
+ 11:{th:'สุก',  an:'จอ',   el:'ดิน+',cn:'戌',c:'ed'},
+ 12:{th:'ไห',   an:'กุน',  el:'น้ำ-',cn:'亥',c:'en2'}
+};
+
+// Hidden stems [main, 2nd, 3rd]
+const HIDDEN={
+  1:[9],2:[6,1,7],3:[5,3,7],4:[2],5:[5,2,8],6:[4,3,1],
+  7:[4],8:[6,2,4],9:[7,9,5],10:[8],11:[5,7,3],12:[9,5]
+};
+
+// Ten Gods matrix[dayStem-1][otherStem-1]
+const JM=[
+  [1,2,3,4,5,6,7,8,9,10],
+  [2,1,4,3,6,5,8,7,10,9],
+  [9,10,1,2,3,4,5,6,7,8],
+  [10,9,2,1,4,3,6,5,8,7],
+  [7,8,9,10,1,2,3,4,5,6],
+  [8,7,10,9,2,1,4,3,6,5],
+  [5,6,7,8,9,10,1,2,3,4],
+  [6,5,8,7,10,9,2,1,4,3],
+  [3,4,5,6,7,8,9,10,1,2],
+  [4,3,6,5,8,7,10,9,2,1]
+];
+const JN={
+  1:{th:'ปี่เกียง',  cn:'比肩'},2:{th:'เกี๊ยบไช้',cn:'刧財'},
+  3:{th:'เจียะซิ้ง', cn:'食神'},4:{th:'เซียกัว',   cn:'伤官'},
+  5:{th:'เพียงใช้',  cn:'偏財'},6:{th:'เจี้ยไช้',  cn:'正財'},
+  7:{th:'ชิ๊กสัวะ',  cn:'七杀'},8:{th:'เจี้ยกัว',  cn:'正官'},
+  9:{th:'เพียงอิ่ง', cn:'偏印'},10:{th:'เจี้ยอิ่ง',cn:'正印'}
+};
+const SS={
+  1:'长生 เกิด',2:'沐浴 อาบน้ำ',3:'冠带 หนุ่มสาว',4:'临官 ทำงาน',
+  5:'帝旺 รุ่งเรือง',6:'衰 เสื่อม',7:'病 เสื่อม',8:'死 ตาย',
+  9:'墓 สุสาน',10:'绝 สูญสิ้น',11:'胎 ตั้งครรภ์',12:'养 เติบโต'
+};
+
+// Lamda boundaries per calendar month
+// Lamda boundary per calendar month [big, small]
+// L values are in 0.79–1.79 range (months 1–2 = 0.7x, months 3–12 = 1.0x–1.7x)
+// BUG FIX: month 3 small = 1.0 exactly (360°/360 = 1.0, NOT 360/360+1 = 2.0)
+const LREF=[
+  [285/360,    300/360  ],  // mo 1  big=0.7917 sml=0.8333
+  [315/360,    330/360  ],  // mo 2  big=0.8750 sml=0.9167
+  [345/360,    1.0      ],  // mo 3  big=0.9583 sml=1.0000  ← fixed
+  [15/360+1,   30/360+1 ],  // mo 4  big=1.0417 sml=1.0833
+  [45/360+1,   60/360+1 ],  // mo 5  big=1.1250 sml=1.1667
+  [75/360+1,   90/360+1 ],  // mo 6  big=1.2083 sml=1.2500
+  [105/360+1, 120/360+1 ],  // mo 7  big=1.2917 sml=1.3333
+  [135/360+1, 150/360+1 ],  // mo 8  big=1.3750 sml=1.4167
+  [165/360+1, 180/360+1 ],  // mo 9  big=1.4583 sml=1.5000
+  [195/360+1, 210/360+1 ],  // mo 10 big=1.5417 sml=1.5833
+  [225/360+1, 240/360+1 ],  // mo 11 big=1.6250 sml=1.6667
+  [255/360+1, 270/360+1 ],  // mo 12 big=1.7083 sml=1.7500
+];
+
+// Hour → ยาม lookup (from Cal8Yee B66:C89)
+const YMAP={0:1,1:2,2:2,3:3,4:3,5:4,6:4,7:5,8:5,9:6,10:6,11:7,12:7,
+            13:8,14:8,15:9,16:9,17:10,18:10,19:11,20:11,21:12,22:12,23:1};
+
+// ═══════════════════════════════════════════════════════
+//  MATH HELPERS
+// ═══════════════════════════════════════════════════════
+const EXCEL_BASE=2415018.5, JD_1990=2447891.5, DPLU=1/0.00281547942;
+const rad=d=>d*Math.PI/180;
+function m10(x){return((x-1)%10+10)%10+1}
+function m12(x){return((x-1)%12+12)%12+1}
+
+function toJD(y,m,d,h=12,mn=0){
+  let d2=d+h/24+mn/1440; if(m<=2){y--;m+=12;}
+  const A=Math.trunc(y/100),B=2-A+Math.trunc(A/4);
+  return Math.trunc(365.25*(y+4716))+Math.trunc(30.6001*(m+1))+d2+B-1524.5;
+}
+
+// Compute L = (Ec+N+279.403303)/360 matching Excel L122/L61
+// H = excel_serial + EXCEL_BASE - JD_1990 - TIME(6,18,0)
+function computeL(excelSerial){
+  const dayNum = excelSerial + EXCEL_BASE - JD_1990 - (6/24+18/1440);
+  const T=(JD_1990-2415020)/36524.25;
+  const Eg=(279.6966778+36000.76892*T+0.0003025*T*T)%360;
+  const Wg=(281.2208444+1.719175*T+0.000452778*T*T)%360;
+  const e =0.01675104-0.0000418*T-0.000000126*T*T;
+  const N =((360/365.242191*dayNum)%360+360)%360;
+  const Mo=((N+Eg-Wg)%360+360)%360;
+  const Ec=(360/Math.PI)*e*Math.sin(rad(Mo));
+  return (Ec+N+279.403303)/360;
+}
+
+// JD ↔ Excel serial
+const jd2ex=jd=>jd-EXCEL_BASE;
+const ex2jd=s=>s+EXCEL_BASE;
+
+function jd2date(jd){
+  const z=Math.floor(jd+.5),f=(jd+.5)-z;
+  let A=z; if(z>=2299161){const a=Math.floor((z-1867216.25)/36524.25);A=z+1+a-Math.floor(a/4);}
+  const B=A+1524,C=Math.floor((B-122.1)/365.25),D=Math.floor(365.25*C);
+  const E2=Math.floor((B-D)/30.6001);
+  const dy=B-D-Math.floor(30.6001*E2);
+  const mo=E2<14?E2-1:E2-13,yr=mo>2?C-4716:C-4715;
+  const mn2=Math.round((jd+.5-Math.floor(jd+.5))*1440);
+  return{y:yr,mo,d:dy,h:Math.floor(mn2/60)%24,m:mn2%60};
+}
+function fmtDate(jd){
+  const d=jd2date(jd);
+  const M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  return`${d.d} ${M[d.mo-1]} ${d.y+543} ${String(d.h).padStart(2,'0')}:${String(d.m).padStart(2,'0')} น.`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  FOUR PILLARS
+// ═══════════════════════════════════════════════════════
+function yearPillar(yr,L){
+  const lichun=LREF[1][0]; // 立春 Lichun = 315/360 = 0.875 — BaZi year change point
+  const adjY=L>=lichun?yr:yr-1;
+  return{stem:m10(adjY-3),branch:m12(adjY+9),adjY};
+}
+
+function monthPillar(calMon,L,yearStem){
+  const[lamBig]=LREF[calMon-1];
+  const E124=L>=lamBig?0:-1;
+  const E125=calMon+E124-1;  // solar month -1
+  const branch=m12(E125+2);
+  const ye=yearStem>5?yearStem-5:yearStem;
+  const j123=[3,5,7,9,1][ye-1];
+  const brAdj=branch-3<0?12+branch-3:branch-3;
+  return{stem:m10(brAdj+j123),branch,solarMonth:E125};
+}
+
+function dayPillar(yr,mo,d,h){
+  // Use Math.floor (not Math.round) — jd noon can be exactly .5 which JS rounds up wrongly
+  const ex=Math.floor(jd2ex(toJD(yr,mo,d,12,0)));
+  const t=h>=23?1:0;
+  const O=ex-4384+t;
+  const br=(O%12+12)%12+1;
+  return{stem:m10(O+3),branch:br===0?12:br};
+}
+
+function hourPillar(dayStem,h){
+  const branch=h>=23||h<1?1:h<3?2:h<5?3:h<7?4:h<9?5:h<11?6:h<13?7:h<15?8:h<17?9:h<19?10:h<21?11:12;
+  const yam=YMAP[h];
+  const de=dayStem>5?dayStem-5:dayStem;
+  const S125=[1,3,5,7,9][de-1];
+  return{stem:m10(S125+yam-1),branch,yam};
+}
+
+// Siangsae (12 growth phases) — verified against Excel Cal8Yee
+// Key: always compare dayStem vs targetBranch
+// Starting branch (長生/Growth) per heavenly stem:
+//   甲1=亥12, 乙2=午7, 丙3=寅3, 丁4=酉10
+//   戊5=寅3,  己6=酉10, 庚7=巳6, 辛8=子1, 壬9=申9, 癸10=卯4
+const SS_START={1:12,2:7,3:3,4:10,5:3,6:10,7:6,8:1,9:9,10:4};
+function siangsae(dayStem,branch){
+  const s=SS_START[dayStem];
+  return((branch-s+12)%12)+1;
+}
+
+// Ten Gods helpers
+function js(ds,os){return JM[ds-1][os-1]||null;}
+function jsE(ds,br){const m=HIDDEN[br][0];return m?js(ds,m):null;}
+function jsStr(i){return i?JN[i].th:'';}
+
+// ═══════════════════════════════════════════════════════
+//  VAYJORN 大運
+// ═══════════════════════════════════════════════════════
+function vayjorn(mStem,mBranch,dir,startAge,n=8){
+  const out=[];
+  let s=mStem,b=mBranch;
+  for(let i=0;i<n;i++){
+    s=m10(s+dir);b=m12(b+dir);
+    out.push({stem:s,branch:b,age:Math.round(startAge)+i*10});
+  }
+  return out;
+}
+
+// ═══════════════════════════════════════════════════════
+//  MAIN CALCULATE
+// ═══════════════════════════════════════════════════════
+function calc(){
+  const day=+document.getElementById('dd').value;
+  const mon=+document.getElementById('mm').value;
+  const yrBE=+document.getElementById('yy').value;
+  const yr =yrBE-543;
+  const hr =+document.getElementById('hh').value;
+  const mi =+document.getElementById('mn').value;
+  const gdr=+document.getElementById('gd').value;
+
+  document.getElementById('err').style.display='none';
+  if(!day||!mon||!yr||isNaN(hr)||isNaN(mi)){
+    document.getElementById('err').textContent='กรุณากรอกข้อมูลให้ครบ';
+    document.getElementById('err').style.display='block';
+    document.getElementById('results').style.display='block';
+    return;
+  }
+
+  try{
+    const jdBirth=toJD(yr,mon,day,hr,mi);
+    const exBirth=jd2ex(jdBirth);
+    const L=computeL(exBirth);
+
+    // Month 1 excel serial for sart reference
+    const ex_m1=jd2ex(toJD(yr,mon,1,0,0));
+    const L_m1=computeL(ex_m1);
+    const[lamBig,lamSml]=LREF[mon-1];
+
+    // Sart dates
+    const sartBigEx=DPLU*(lamBig-L_m1)+ex_m1;
+    const sartSmlEx=DPLU*(lamSml-L_m1)+ex_m1;
+    const sartBigJD=ex2jd(sartBigEx);
+    const sartSmlJD=ex2jd(sartSmlEx);
+
+    // Start age for vayjorn
+    const diffDays=Math.abs(sartBigEx-exBirth);
+    const startAge=diffDays/3;
+
+    // Four pillars
+    const yp=yearPillar(yr,L);
+    const mp=monthPillar(mon,L,yp.stem);
+    const dp=dayPillar(yr,mon,day,hr);
+    const hp=hourPillar(dp.stem,hr);
+
+    // Vayjorn direction
+    const yearYin=yp.stem%2===0;
+    const dir=gdr===1?(yearYin?-1:1):(yearYin?1:-1);
+
+    // Vayjorn periods
+    const periods=vayjorn(mp.stem,mp.branch,dir,startAge);
+    const nowBE=new Date().getFullYear()+543;
+    const birthBE=yr+543;
+
+    // ── RENDER ──
+    const PS=[
+      {lbl:'เสาปี 年',  ...yp},
+      {lbl:'เสาเดือน 月',...mp},
+      {lbl:'เสาวัน 日',  ...dp},
+      {lbl:'เสาเวลา 時', ...hp},
+    ];
+
+    let html='';
+
+    // ─ Pillar chart ─ (display order: Hour, Day, Month, Year — left to right)
+    html+=`<div class="sec">四柱命盤 สี่เสาดวงชะตา</div><div class="pgrid-wrap"><div class="pgrid">`;
+    [PS[3],PS[2],PS[1],PS[0]].forEach((p,i)=>{
+    const origIdx=[3,2,1,0][i];
+      const hs=H[p.stem],eb=E[p.branch];
+      const hidStems=HIDDEN[p.branch].filter(Boolean);
+      const jsH=origIdx===2?null:js(dp.stem,p.stem);
+      const jsEb=jsE(dp.stem,p.branch);
+      const ss=siangsae(dp.stem,p.branch);
+      const hidRows=hidStems.map(s=>{
+        const hv=H[s]; if(!hv) return '';
+        const jsi=origIdx===2?null:js(dp.stem,s);
+        return `<div class="hid-row"><span class="${hv.c}" style="font-size:.9rem;line-height:1.1">${hv.cn}</span><span style="font-size:.62rem;margin-left:3px">${hv.th}</span>${jsi?`<span style="font-size:.58rem;opacity:.5;margin-left:3px">${JN[jsi].th}</span>`:''}</div>`;
+      }).join('');
+      html+=`<div class="pillar">
+        <div class="pl-hd">${p.lbl}</div>
+        <div class="pl-hs">
+          <span class="cn ${hs.c}">${hs.cn}</span>
+          <span class="th">${hs.th}</span>
+          <span class="el">${hs.el}</span>
+        </div>
+        <div class="pl-eb">
+          <span class="cn ${eb.c}">${eb.cn}</span>
+          <span class="th">${eb.th} · ${eb.an}</span>
+          <span class="an">${eb.el}</span>
+          <div style="border-top:1px dashed rgba(212,168,67,.18);margin-top:8px;padding-top:7px;text-align:left;padding-left:4px">
+            ${hidRows||'<span style="font-size:.6rem;opacity:.3">—</span>'}
+          </div>
+          <div style="font-size:.57rem;opacity:.4;margin-top:5px;text-align:center">${SS[ss]||''}</div>
+        </div>
+        <div class="pl-js">
+          ${jsH?JN[jsH].th:'ตัวเอง'}
+          ${jsEb?` / ${JN[jsEb].th}`:''}
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+
+
+    // ─ Transit pillars (ดวงจร) ─
+    const now=new Date();
+    const tYr=now.getFullYear(),tMon=now.getMonth()+1,tDay=now.getDate();
+    const tHr=now.getHours(),tMi=now.getMinutes();
+    const tJD=toJD(tYr,tMon,tDay,tHr,tMi);
+    const tEx=jd2ex(tJD);
+    const tL=computeL(tEx);
+    const tYp=yearPillar(tYr,tL);
+    const tMp=monthPillar(tMon,tL,tYp.stem);
+    const tDp=dayPillar(tYr,tMon,tDay,tHr);
+    const tHp=hourPillar(dp.stem,tHr);
+    (function(){try{
+      const TPS=[
+        {lbl:'ยามจร 時',...tHp},
+        {lbl:'วันจร 日',...tDp},
+        {lbl:'เดือนจร 月',...tMp},
+        {lbl:'ปีจร 年',...tYp},
+      ];
+      const nowStr=tDay+'/'+tMon+'/'+(tYr+543)+' '+String(tHr).padStart(2,'0')+':'+String(tMi).padStart(2,'0')+' น.';
+      html+='<div class="sec">流年流月 ดวงจร · '+nowStr+'</div><div class="pgrid-wrap"><div class="pgrid">';
+      TPS.forEach(function(p,pi){
+        const hs=H[p.stem],eb=E[p.branch];
+        const hidStems=HIDDEN[p.branch].filter(Boolean);
+        const jsH=pi===1?null:js(dp.stem,p.stem);
+        const jsEb=jsE(dp.stem,p.branch);
+        const ss=siangsae(dp.stem,p.branch);
+        const hidRows=hidStems.map(function(s){
+          const hv=H[s]; if(!hv) return '';
+          const jsi=pi===1?null:js(dp.stem,s);
+          return '<div class="hid-row"><span class="'+hv.c+'" style="font-size:.9rem;line-height:1.1">'+hv.cn+'</span><span style="font-size:.62rem;margin-left:3px">'+hv.th+'</span>'+(jsi?'<span style="font-size:.58rem;opacity:.5;margin-left:3px">'+JN[jsi].th+'</span>':'')+'</div>';
+        }).join('');
+        html+='<div class="pillar" style="border-color:rgba(212,168,67,.45);box-shadow:0 0 16px rgba(212,168,67,.1)">'
+          +'<div class="pl-hd" style="background:rgba(212,168,67,.22)">'+p.lbl+'</div>'
+          +'<div class="pl-hs"><span class="cn '+hs.c+'">'+hs.cn+'</span><span class="th">'+hs.th+'</span><span class="el">'+hs.el+'</span></div>'
+          +'<div class="pl-eb"><span class="cn '+eb.c+'">'+eb.cn+'</span><span class="th">'+eb.th+' · '+eb.an+'</span><span class="an">'+eb.el+'</span>'
+          +'<div style="border-top:1px dashed rgba(212,168,67,.18);margin-top:8px;padding-top:7px;text-align:left;padding-left:4px">'+(hidRows||'<span style="font-size:.6rem;opacity:.3">—</span>')+'</div>'
+          +'<div style="font-size:.57rem;opacity:.4;margin-top:5px;text-align:center">'+(SS[ss]||'')+'</div></div>'
+          +'<div class="pl-js">'+(jsH?JN[jsH].th:'ตัวเอง')+(jsEb?' / '+JN[jsEb].th:'')+'</div>'
+          +'</div>';
+      });
+      html+='</div></div>';
+    }catch(e){console.warn('Transit render error:',e);}
+    })();
+
+    // ─ Info cards ─
+    html+=`<div class="info-grid">`;
+    html+=`<div class="icard"><h4>ข้อมูลเกิด</h4>
+      <div class="irow"><span class="ilbl">วันเกิด</span><span class="ival">${day}/${mon}/${yr+543} พศ.</span></div>
+      <div class="irow"><span class="ilbl">เวลา</span><span class="ival">${String(hr).padStart(2,'0')}:${String(mi).padStart(2,'0')} น.</span></div>
+      <div class="irow"><span class="ilbl">เพศ</span><span class="ival">${gdr===1?'ชาย':'หญิง'}</span></div>
+      <div class="irow"><span class="ilbl">ปีกะจื้อ</span><span class="ival hi">${H[yp.stem].th}${E[yp.branch].th} (${yp.adjY})</span></div>
+    </div>`;
+    html+=`<div class="icard"><h4>สาร์ทใหญ่ · สาร์ทเล็ก</h4>
+      <div class="irow"><span class="ilbl">สาร์ทใหญ่</span><span class="ival hi" style="font-size:.7rem">${fmtDate(sartBigJD)}</span></div>
+      <div class="irow"><span class="ilbl">สาร์ทเล็ก</span><span class="ival" style="font-size:.7rem">${fmtDate(sartSmlJD)}</span></div>
+      <div class="irow"><span class="ilbl">วัยจรเริ่ม</span><span class="ival hi">อายุ ${startAge.toFixed(1)} ปี</span></div>
+      <div class="irow"><span class="ilbl">ทิศวัยจร</span><span class="ival">${dir===1?'ไปหน้า 順':'ถอยหลัง 逆'}</span></div>
+    </div>`;
+    html+=`<div class="icard"><h4>ราศีวัน · ธาตุ</h4>
+      <div class="irow"><span class="ilbl">ราศีวัน</span><span class="ival hi">${H[dp.stem].th} ${H[dp.stem].cn}</span></div>
+      <div class="irow"><span class="ilbl">ธาตุ</span><span class="ival">${H[dp.stem].el}</span></div>
+      <div class="irow"><span class="ilbl">เซี่ยงแซวัน</span><span class="ival">${SS[siangsae(dp.stem,dp.branch)]}</span></div>
+      <div class="irow"><span class="ilbl">ยาม</span><span class="ival">${E[hp.branch].th} (ยาม${hp.yam})</span></div>
+    </div>`;
+    html+=`</div>`;// info-grid
+
+    // ─ Zodiac reference table ─
+    (function(){try{
+      var ZR=[
+        {label:'ฤดูหนาว 冬',items:[
+          {br:12,cn:'亥',th:'ไห',an:'กุน',  bg:'#0d3b6e',tc:'#a8d4f8',sp:false},
+          {br:1, cn:'子',th:'จื้อ',an:'ชวด',bg:'#0d3b6e',tc:'#a8d4f8',sp:false},
+          {br:2, cn:'丑',th:'ทิ่ว',an:'ฉลู', bg:'#6b4c0a',tc:'#fde89a',sp:true},
+        ]},
+        {label:'ฤดูใบไม้ผลิ 春',items:[
+          {br:3, cn:'寅',th:'อิ๊ง',an:'ขาล',  bg:'#1a4a20',tc:'#9de0a0',sp:false},
+          {br:4, cn:'卯',th:'เบ้า',an:'เถาะ',  bg:'#1a4a20',tc:'#9de0a0',sp:false},
+          {br:5, cn:'辰',th:'ซิ้ง',an:'มะโรง',bg:'#6b4c0a',tc:'#fde89a',sp:true},
+        ]},
+        {label:'ฤดูร้อน 夏',items:[
+          {br:6, cn:'巳',th:'จี๋', an:'มะเส็ง',bg:'#6e0d3b',tc:'#f8aed0',sp:false},
+          {br:7, cn:'午',th:'โง่ว',an:'มะเมีย',bg:'#6e0d3b',tc:'#f8aed0',sp:false},
+          {br:8, cn:'未',th:'บี่', an:'มะแม',  bg:'#6b4c0a',tc:'#fde89a',sp:true},
+        ]},
+        {label:'ฤดูใบไม้ร่วง 秋',items:[
+          {br:9, cn:'申',th:'ซิม',an:'วอก',bg:'#2a2a2a',tc:'#d8d8d8',sp:false},
+          {br:10,cn:'酉',th:'อิ้ว',an:'ระกา',bg:'#2a2a2a',tc:'#d8d8d8',sp:false},
+          {br:11,cn:'戌',th:'สุก',an:'จอ',  bg:'#6b4c0a',tc:'#fde89a',sp:true},
+        ]},
+      ];
+      html+='<div class="sec">十二地支 นักษัตร · ฤดูกาล</div><div class="zodiac-wrap">';
+      // Collect all labels for each branch
+      var brLabels={};
+      function addLabel(br,txt,clr){
+        if(!brLabels[br]) brLabels[br]=[];
+        brLabels[br].push({txt:txt,clr:clr});
+      }
+      // Natal (ชะตา)
+      addLabel(yp.branch, '★ ปีชะตา',   '#ffd700');
+      addLabel(mp.branch, '◆ เดือนชะตา','#ffd700');
+      addLabel(dp.branch, '■ วันชะตา',  '#ffd700');
+      addLabel(hp.branch, '● ยามชะตา',  '#ffd700');
+      // Transit (จร)
+      addLabel(tYp.branch, '▶ ปีจร',    '#a8d4f8');
+      addLabel(tMp.branch, '▶ เดือนจร', '#a8d4f8');
+      // Current vayjorn (วัยจร)
+      var curVay=periods.find(function(p){var sy=birthBE+p.age,ey=birthBE+p.age+9;return nowBE>=sy&&nowBE<=ey;})||periods[0];
+      if(curVay) addLabel(curVay.branch, '◉ วัยจร', '#f8aed0');
+
+      ZR.forEach(function(row){
+        html+='<div class="zodiac-row-label">'+row.label+'</div><div class="zodiac-grid">';
+        row.items.forEach(function(z){
+          var labs=brLabels[z.br]||[];
+          // Determine border/shadow priority: natal > transit > vayjorn > none
+          var hasNatal=labs.some(function(l){return l.clr==='#ffd700';});
+          var hasTransit=labs.some(function(l){return l.clr==='#a8d4f8';});
+          var hasVay=labs.some(function(l){return l.clr==='#f8aed0';});
+          var border=hasNatal?'2px solid #ffd700':hasTransit?'2px solid #a8d4f8':hasVay?'2px solid #f8aed0':'1px solid rgba(0,0,0,.25)';
+          var shadow=hasNatal?'0 0 12px rgba(255,215,0,.5)':hasTransit?'0 0 8px rgba(168,212,248,.4)':hasVay?'0 0 8px rgba(248,174,208,.4)':'none';
+          var badge=labs.map(function(l){return '<span class="zbadge" style="color:'+l.clr+';font-size:.52rem;display:block;margin-top:1px">'+l.txt+'</span>';}).join('');
+          html+='<div class="zod" style="background:'+z.bg+';color:'+z.tc+';border:'+border+';box-shadow:'+shadow+'">'
+            +'<span class="zcn">'+z.cn+'</span>'
+            +'<span class="zth">'+z.th+'</span>'
+            +'<span class="zan">'+z.an+'</span>'
+            +badge
+            +'</div>';
+        });
+        html+='</div>';
+      });
+      html+='</div></div>';
+    }catch(e){console.warn('Transit render error:',e);}
+    })();
+
+
+
+    // ─ Vayjorn table ─
+    html+=`<div class="sec">大運 ถนนสิบปี · วัยจร</div>
+    <div class="vt-wrap"><table class="vt">
+    <thead><tr>
+      <th>ช่วงอายุ</th>
+      <th>ราศีฟ้า</th>
+      <th>ราศีดิน</th>
+      <th>จับซิ้งบน<br><small style="opacity:.6">Heaven God</small></th>
+      <th>จับซิ้งล่าง<br><small style="opacity:.6">Earth God</small></th>
+      <th>เซี่ยงแซ<br><small style="opacity:.6">12 Phase</small></th>
+      <th>ธาตุ</th>
+    </tr></thead><tbody>`;
+
+    periods.forEach(p=>{
+      const hs=H[p.stem],eb=E[p.branch];
+      const jsH=js(dp.stem,p.stem);
+      const jsEb=jsE(dp.stem,p.branch);
+      const ss=siangsae(dp.stem,p.branch);
+      const endAge=p.age+9;
+      const sy=birthBE+p.age, ey=birthBE+endAge;
+      const cur=nowBE>=sy&&nowBE<=ey;
+      html+=`<tr${cur?' class="now"':''}>
+        <td><span class="vt-age">${p.age}–${endAge}</span><span class="vt-yr">${sy}–${ey} พศ.${cur?' ◀ ปัจจุบัน':''}</span></td>
+        <td><span class="vt-cn ${hs.c}">${hs.cn}</span><span class="vt-th">${hs.th}</span></td>
+        <td><span class="vt-cn ${eb.c}">${eb.cn}</span><span class="vt-th">${eb.th} ${eb.an}</span></td>
+        <td class="vt-js">${jsH?`${JN[jsH].th}<span class="vt-jscn">${JN[jsH].cn}</span>`:'—'}</td>
+        <td class="vt-js">${jsEb?`${JN[jsEb].th}<span class="vt-jscn">${JN[jsEb].cn}</span>`:'—'}</td>
+        <td class="vt-js" style="font-size:.68rem">${SS[ss]||'—'}</td>
+        <td style="font-size:.72rem">${hs.el}</td>
+      </tr>`;
+    });
+
+    html+=`</tbody></table></div>`;
+
+    // ─ Prompt Generator ─
+    // Build chart data object for prompt construction
+    const chartData = {
+      birthDate: `${day}/${mon}/${yr+543} พ.ศ. เวลา ${String(hr).padStart(2,'0')}:${String(mi).padStart(2,'0')} น.`,
+      gender: gdr===1?'Male (ชาย)':'Female (หญิง)',
+      yearPillar:  `${H[yp.stem].th} ${H[yp.stem].cn} (${H[yp.stem].el}) / ${E[yp.branch].th} ${E[yp.branch].cn} (${E[yp.branch].an}, ${E[yp.branch].el})`,
+      monthPillar: `${H[mp.stem].th} ${H[mp.stem].cn} (${H[mp.stem].el}) / ${E[mp.branch].th} ${E[mp.branch].cn} (${E[mp.branch].an}, ${E[mp.branch].el})`,
+      dayPillar:   `${H[dp.stem].th} ${H[dp.stem].cn} (${H[dp.stem].el}) / ${E[dp.branch].th} ${E[dp.branch].cn} (${E[dp.branch].an}, ${E[dp.branch].el})`,
+      hourPillar:  `${H[hp.stem].th} ${H[hp.stem].cn} (${H[hp.stem].el}) / ${E[hp.branch].th} ${E[hp.branch].cn} (${E[hp.branch].an}, ${E[hp.branch].el})`,
+      dayMaster:   `${H[dp.stem].th} ${H[dp.stem].cn} — ${H[dp.stem].el}`,
+      sartBig:     fmtDate(sartBigJD),
+      sartSml:     fmtDate(sartSmlJD),
+      luckStart:   startAge.toFixed(1),
+      luckDir:     dir===1?'Forward (順運)':'Reverse (逆運)',
+      currentPeriod: (function(){var found=periods.find(function(p){var sy=birthBE+p.age,ey=birthBE+p.age+9;return nowBE>=sy&&nowBE<=ey;});return found||periods[periods.length-1]||periods[0];})(),
+      periods: periods,
+      nowBE: nowBE,
+      birthBE: birthBE,
+    };
+
+    // Hidden elements per pillar
+    const hiddenStr = (branch) => HIDDEN[branch].filter(Boolean).map(s=>`${H[s].th}${H[s].cn}(${H[s].el})`).join(', ');
+    
+    // Current luck period string
+    const curP = chartData.currentPeriod;
+    const curPStr = curP 
+      ? `${H[curP.stem].th}${H[curP.stem].cn}/${E[curP.branch].th}${E[curP.branch].cn} (Age ${curP.age}–${curP.age+9}, ${birthBE+curP.age}–${birthBE+curP.age+9} BE)`
+      : 'Not in active period';
+
+    // Build 5 prompt variants
+    const prompts = [
+      {
+        label: '1 · ดวงธาตุ + นิสัย',
+        text: buildPrompt1(chartData, hiddenStr, curPStr)
+      },
+      {
+        label: '2 · อาชีพ + การเงิน',
+        text: buildPrompt2(chartData, hiddenStr, curPStr)
+      },
+      {
+        label: '3 · ความรัก + ครอบครัว',
+        text: buildPrompt3(chartData, hiddenStr, curPStr)
+      },
+      {
+        label: '4 · ช่วงชีวิตวัยนี้',
+        text: buildPrompt4(chartData, hiddenStr, curPStr)
+      },
+      {
+        label: '5 · ดวงรายสัปดาห์',
+        text: buildPrompt5(chartData, hiddenStr, curPStr)
+      },
+    ];
+
+    html+=`<div class="sec">AI Prompt Generator · สร้าง Prompt ทำนายดวง</div>`;
+    html+=`<div class="howto">
+      <div class="howto-title">วิธีใช้งาน</div>
+      <div class="howto-steps">
+        <div class="howto-step"><span class="howto-num">1</span><span>กดปุ่ม <span class="hl">⊕ Copy Prompt</span> ในหัวข้อที่ต้องการ เพื่อคัดลอก prompt ไปยัง clipboard</span></div>
+        <div class="howto-step"><span class="howto-num">2</span><span>เปิด AI ที่คุณใช้งาน เช่น <span class="hl">ChatGPT</span> หรือ <span class="hl">Google Gemini</span></span></div>
+        <div class="howto-step"><span class="howto-num">3</span><span>วาง Prompt ลงในกล่องข้อความ <span class="hl">พร้อมแนบรูปดวง</span> ที่เซฟไว้ด้วย</span></div>
+        <div class="howto-step"><span class="howto-num">4</span><span>เลือก Model ให้ถูกต้อง — <span class="hl">ChatGPT:</span> ใช้ <span class="hl">o3</span> หรือ <span class="hl">GPT-4o</span> &nbsp;|&nbsp; <span class="hl">Gemini:</span> ใช้ <span class="hl">Gemini 2.0 Flash Thinking</span> หรือ <span class="hl">Deep Research</span></span></div>
+        <div class="howto-step"><span class="howto-num">5</span><span>กด <span class="hl">Generate</span> เพื่อดูคำทำนาย <span class="dim">— ขอให้โชคดี ✦</span></span></div>
+      </div>
+    </div>`;
+    html+=`<div class="prompt-sec">`;
+    html+=`<div class="prompt-tabs">`;
+    prompts.forEach((p,i)=>{
+      html+=`<div class="ptab${i===0?' active':''}" onclick="switchTab(${i})">${p.label}</div>`;
+    });
+    html+=`</div>`;
+    prompts.forEach((p,i)=>{
+      html+=`<div class="pblock${i===0?' show':''}" id="pblock-${i}">
+        <div class="pbox" id="ptext-${i}">${escHtml(p.text)}</div>
+        <div style="text-align:center;margin-top:8px"><button class="copy-btn" id="copybtn-${i}" onclick="copyPrompt(${i})">⊕ Copy Prompt</button></div>
+      </div>`;
+    });
+    html+=`</div>`;
+
+    // ─ Consult button ─
+    html+=`<div style="text-align:center;margin:20px 0 10px">
+      <a href="https://lin.ee/YHGY6OI" target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:10px;
+                padding:14px 36px;text-decoration:none;
+                background:linear-gradient(135deg,#ffe066 0%,#d4a843 40%,#f0cc6a 60%,#a07828 100%);
+                color:#1a0000;font-family:Georgia,serif;font-weight:700;
+                font-size:1.05rem;letter-spacing:1.5px;border-radius:4px;
+                box-shadow:0 4px 20px rgba(212,168,67,.55),0 0 40px rgba(212,168,67,.2),inset 0 1px 0 rgba(255,255,255,.4);
+                border:1px solid rgba(255,255,255,.3);
+                animation:goldpulse 2s ease-in-out infinite">
+        <svg width="22" height="22" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#06C755"/><path d="M24 8C15.16 8 8 14.28 8 22c0 4.94 2.94 9.28 7.38 11.96L14 40l6.44-3.38C21.54 36.86 22.76 37 24 37c8.84 0 16-6.28 16-14S32.84 8 24 8z" fill="white"/></svg>
+        ✦ ปรึกษาซินแส ✦
+      </a>
+      <div style="font-family:Georgia,serif;font-size:.72rem;color:rgba(212,168,67,.6);margin-top:8px;letter-spacing:2px">LINE: @Royalnumber789 · โดยซินแสนัท</div>
+    </div>`;
+
+    html+=`<div class="div" style="margin-bottom:28px">✦ ✦ ✦</div>`;
+
+    document.getElementById('out').innerHTML=html;
+    // Store prompts globally for copy
+    window._prompts = prompts;
+    document.getElementById('results').style.display='block';
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+
+  }catch(e){
+    document.getElementById('err').textContent='Error: '+e.message;
+    document.getElementById('err').style.display='block';
+    document.getElementById('results').style.display='block';
+    console.error(e);
+  }
+}
+
+// ─────────────────────────────────────────────
+//  PROMPT BUILDER FUNCTIONS
+// ─────────────────────────────────────────────
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function chartHeader(cd, hiddenStr){
+  // Build hidden elements table properly
+  const hh = hiddenStr(cd.hourBranch||1);
+  const mh = hiddenStr(cd.monthBranch||1);
+  const dh = hiddenStr(cd.dayBranch||1);
+  const yh = hiddenStr(cd.yearBranch||1);
+
+  return `=== SYSTEM INSTRUCTION ===
+You are a highly experienced Chinese Metaphysics (BaZi / 八字命理) consultant with 30+ years of practice in Traditional Chinese Astrology. You possess deep expertise in:
+- Five Elements Theory (五行 Wu Xing)
+- Ten Gods / Ten Deities System (十神 Shi Shen)
+- Twelve Growth Phases (十二长生 Shi Er Chang Sheng)
+- Branch Interactions: Clash (冲), Combine (合), Punishment (刑), Harm (害)
+- Great Luck Cycles (大运 Da Yun) and Annual Luck (流年 Liu Nian)
+
+CRITICAL OUTPUT RULES:
+1. Respond ENTIRELY in Thai language (ภาษาไทยเท่านั้น)
+2. Do NOT use English, Chinese, or any other language in your response
+3. Write in a warm, professional tone — like an experienced master consulting face-to-face
+4. Be specific and actionable, not vague
+5. Structure your response with clear headings
+6. Length: comprehensive and detailed
+
+=== SUBJECT'S BAZI CHART ===
+
+Birth Information:
+- Date & Time: ${cd.birthDate}
+- Gender: ${cd.gender}
+- Chinese Calendar Year: ${cd.adjYear||''}
+
+Four Pillars (四柱命盤):
+╔══════════╦══════════════╦══════════════╦══════════════╦══════════════╗
+║  Pillar  ║   Hour 時    ║    Day 日    ║  Month 月    ║   Year 年    ║
+╠══════════╬══════════════╬══════════════╬══════════════╬══════════════╣
+║ Stem 天干║ ${cd.hourPillar.split('/')[0].trim().padEnd(12)} ║ ${cd.dayPillar.split('/')[0].trim().padEnd(12)} ║ ${cd.monthPillar.split('/')[0].trim().padEnd(12)} ║ ${cd.yearPillar.split('/')[0].trim().padEnd(12)} ║
+║Branch地支║ ${cd.hourPillar.split('/')[1].trim().padEnd(12)} ║ ${cd.dayPillar.split('/')[1].trim().padEnd(12)} ║ ${cd.monthPillar.split('/')[1].trim().padEnd(12)} ║ ${cd.yearPillar.split('/')[1].trim().padEnd(12)} ║
+║Hidden藏干║ ${hh.padEnd(12)} ║ (Day Master) ║ ${mh.padEnd(12)} ║ ${yh.padEnd(12)} ║
+╚══════════╩══════════════╩══════════════╩══════════════╩══════════════╝
+
+Key Chart Data:
+- Day Master (日主 / ราศีวัน): ${cd.dayMaster}
+- Solar Term — Major (大节气): ${cd.sartBig}
+- Solar Term — Minor (小节气): ${cd.sartSml}
+- Great Luck begins at age: ${cd.luckStart} years
+- Luck Cycle Direction: ${cd.luckDir}
+- Current Great Luck Period: ${curPStrGlobal||'Not determined'}`;
+}
+
+let curPStrGlobal='';
+
+function buildPrompt1(cd, hiddenStr, curPStr){
+  curPStrGlobal=curPStr;
+  return chartHeader(cd,hiddenStr)+`
+
+=== READING REQUEST #1: ELEMENT ANALYSIS & PERSONALITY ===
+
+Please analyze this BaZi chart thoroughly and provide your reading in Thai language only.
+
+Organize your response using these sections:
+
+**ส่วนที่ 1 — วิเคราะห์ราศีวันและธาตุหลัก**
+- ราศีวัน (Day Master) คืออะไร และมีพลังมาก/น้อย/กลาง อย่างไร
+- ธาตุใดหนุนดวง ธาตุใดเป็นอุปสรรค
+- สมดุลธาตุทั้ง 5 ในดวง (ขาด/เกิน อะไร)
+
+**ส่วนที่ 2 — นิสัยและบุคลิกภาพ**
+- บุคลิกโดดเด่น จุดแข็ง จุดอ่อน
+- วิธีคิด วิธีทำงาน ความสัมพันธ์กับคนรอบข้าง
+- สิ่งที่ทำให้มีความสุข สิ่งที่ทำให้เครียด
+
+**ส่วนที่ 3 — สุขภาพและร่างกาย**
+- อวัยวะหรือระบบที่ต้องระวังตามธาตุ
+- ช่วงอายุที่ควรดูแลสุขภาพเป็นพิเศษ
+- ข้อแนะนำด้านสุขภาพที่เหมาะกับดวง
+
+**ส่วนที่ 4 — สี ทิศ ตัวเลขมงคล**
+- สีที่เสริมพลังงาน
+- ทิศที่เหมาะสำหรับที่อยู่อาศัย/การทำงาน
+- ตัวเลขมงคลและสิ่งเสริมดวง
+
+Please be specific, insightful, and write as an expert practitioner — not generic. Use Thai language throughout.`;
+}
+
+function buildPrompt2(cd, hiddenStr, curPStr){
+  curPStrGlobal=curPStr;
+  return chartHeader(cd,hiddenStr)+`
+
+=== READING REQUEST #2: CAREER & WEALTH ANALYSIS ===
+
+Please analyze this BaZi chart and provide career and wealth insights in Thai language only.
+
+**ส่วนที่ 1 — อาชีพที่เหมาะสม**
+- อาชีพและสาขาที่สอดคล้องกับธาตุและดวงชะตา (ระบุชัดเจน เช่น แพทย์ / นักธุรกิจ / ศิลปิน ฯลฯ)
+- ลักษณะการทำงานที่เหมาะ: อิสระ / องค์กร / ค้าขาย / วิชาชีพ
+- อาชีพที่ควรหลีกเลี่ยงและเหตุผล
+
+**ส่วนที่ 2 — ดวงการเงินและทรัพย์สิน**
+- ดวงทรัพย์โดยรวม (ทรัพย์ตรง/ทรัพย์อ้อม ในดวง)
+- แนวโน้มสะสมทรัพย์ตลอดชีวิต
+- จุดแข็งและจุดเสี่ยงทางการเงิน
+
+**ส่วนที่ 3 — ผลของวัยจรต่อการงานการเงิน**
+Current Great Luck Period: ${curPStr}
+- วัยจรนี้เอื้อหรือขัดต่อการงาน/ธุรกิจอย่างไร
+- โอกาสที่ควรคว้า ความเสี่ยงที่ต้องระวัง
+- จังหวะที่ดีสำหรับการเปลี่ยนงาน ลงทุน หรือเริ่มธุรกิจ
+
+**ส่วนที่ 4 — คำแนะนำปฏิบัติ**
+- กลยุทธ์สร้างรายได้ที่เหมาะกับดวง
+- ข้อควรระวังทางการเงิน
+- สิ่งที่ควรทำในช่วงนี้เพื่อเสริมดวงการงาน
+
+Please be direct, practical, and detailed. Write entirely in Thai.`;
+}
+
+function buildPrompt3(cd, hiddenStr, curPStr){
+  curPStrGlobal=curPStr;
+  return chartHeader(cd,hiddenStr)+`
+
+=== READING REQUEST #3: LOVE, MARRIAGE & FAMILY ===
+
+Please analyze this BaZi chart for relationship and family matters. Write entirely in Thai language.
+
+**ส่วนที่ 1 — ดวงความรักและคู่ครอง**
+- ลักษณะคู่ครองที่เหมาะสมตามดวงชะตา (ธาตุ นิสัย อาชีพ)
+- ดวงความรักโดยรวม: มีโอกาสพบรักง่าย/ยาก อย่างไร
+- ช่วงอายุที่เหมาะแก่การสร้างครอบครัว
+- อุปสรรคในชีวิตคู่ที่ต้องระวัง
+
+**ส่วนที่ 2 — ความสัมพันธ์กับครอบครัว**
+- ความสัมพันธ์กับพ่อแม่ — ได้รับการสนับสนุน หรือต้องพึ่งตัวเอง
+- ความสัมพันธ์กับพี่น้อง เพื่อน คนรอบข้าง
+- ดวงบุตร — มีบุตรง่าย/ยาก ความสัมพันธ์ผู้ปกครอง-บุตร
+
+**ส่วนที่ 3 — วัยจรกับชีวิตรักในปัจจุบัน**
+Current Great Luck Period: ${curPStr}
+- ช่วงวัยจรนี้ส่งผลต่อชีวิตคู่อย่างไร
+- มีโอกาสพบคู่ / แต่งงาน / มีบุตร ในช่วงนี้หรือไม่
+- ความเสี่ยงในความสัมพันธ์ที่ต้องระวัง
+
+**ส่วนที่ 4 — คำแนะนำ**
+- วิธีดูแลรักษาความสัมพันธ์ให้ยั่งยืน
+- สิ่งที่ควรระวังในการเลือกคู่
+- วิธีเสริมดวงความรักและครอบครัว
+
+Write with depth and warmth, entirely in Thai language.`;
+}
+
+function buildPrompt4(cd, hiddenStr, curPStr){
+  curPStrGlobal=curPStr;
+  const periodRows = cd.periods.map(p=>{
+    const hs=H[p.stem],eb=E[p.branch];
+    if(!hs||!eb) return '';
+    const sy=cd.birthBE+p.age, ey=cd.birthBE+p.age+9;
+    const isCur = cd.nowBE>=sy&&cd.nowBE<=ey;
+    return `  • Age ${String(p.age).padStart(2,'0')}–${String(p.age+9).padStart(2,'0')} (BE ${sy}–${ey}): ${hs.th}${hs.cn} / ${eb.th}${eb.cn} (${eb.an})${isCur?' ◀ CURRENT PERIOD':''}`;
+  }).filter(Boolean).join('\n');
+
+  return chartHeader(cd,hiddenStr)+`
+
+=== COMPLETE GREAT LUCK CYCLE TABLE ===
+${periodRows}
+
+Current Year (流年): BE ${cd.nowBE}
+Current Great Luck: ${curPStr}
+
+=== READING REQUEST #4: DEEP LIFE ANALYSIS (COMPREHENSIVE) ===
+
+This is a full deep-research BaZi reading. Please provide an extensive, expert-level analysis. Write ENTIRELY in Thai language. Be thorough, insightful, and specific — not generic.
+
+---
+
+**บทที่ 1 — ภาพรวมดวงชะตาตลอดชีวิต**
+วิเคราะห์ดวงชะตาโดยรวมตั้งแต่เกิดจนแก่:
+- ช่วงวัยเด็กและวัยรุ่น (อิทธิพลจากครอบครัว สภาพแวดล้อมที่เติบโต)
+- ช่วงวัยทำงาน (จุดพีค จุดตกต่ำ เหตุการณ์สำคัญ)
+- ช่วงปลายชีวิต (ความมั่นคง ครอบครัว มรดก)
+
+**บทที่ 2 — วิเคราะห์วัยจรแต่ละช่วงอย่างละเอียด**
+สำหรับแต่ละช่วงวัยจรในตาราง ให้วิเคราะห์:
+- ธาตุของวัยจรกระทบดวงอย่างไร (เสริม/ขัด)
+- เหตุการณ์สำคัญที่คาดว่าจะเกิดในช่วงนั้น
+- โอกาสและความเสี่ยงที่โดดเด่น
+
+**บทที่ 3 — ชีวิตปัจจุบัน (BE ${cd.nowBE})**
+วิเคราะห์สถานการณ์ปัจจุบันอย่างละเอียด:
+- การงานและธุรกิจ ณ ตอนนี้
+- การเงินและทรัพย์สิน
+- ความรักและความสัมพันธ์
+- สุขภาพกายและใจ
+- สิ่งที่กำลังเปลี่ยนแปลงในชีวิต
+
+**บทที่ 4 — พยากรณ์ 3 ปีข้างหน้า**
+วิเคราะห์แนวโน้มปี BE ${cd.nowBE}–${cd.nowBE+2}:
+- เหตุการณ์หรือโอกาสสำคัญที่ควรเตรียมตัว
+- ช่วงเวลาที่ดาวดีและช่วงที่ต้องระวัง
+- การตัดสินใจสำคัญที่ควรทำหรือหลีกเลี่ยง
+
+**บทที่ 5 — คำแนะนำจากซินแส (Practical Guidance)**
+- สิ่งที่ควรทำทันทีเพื่อเสริมดวงและชีวิต
+- ข้อห้ามและสิ่งที่ควรหลีกเลี่ยงสำหรับดวงนี้
+- สีมงคล ทิศมงคล ตัวเลขนำโชค สิ่งเสริมพลัง
+- คำแนะนำด้านจิตใจและการพัฒนาตัวเอง
+
+---
+
+IMPORTANT: This is a premium reading. Be thorough, specific, and write with the authority of an experienced master. All output must be in Thai language only. Minimum 1,000 words.`;
+}
+
+function buildPrompt5(cd, hiddenStr, curPStr){
+  curPStrGlobal=curPStr;
+  // Calculate next 10 days from today
+  const today = new Date();
+  const days = [];
+  for(let i=0;i<10;i++){
+    const d=new Date(today); d.setDate(today.getDate()+i);
+    const dd=String(d.getDate()).padStart(2,'0');
+    const mm=String(d.getMonth()+1).padStart(2,'0');
+    const yyyy=d.getFullYear()+543;
+    const weekdays=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+    days.push('  Day '+(i+1)+' — วัน'+weekdays[d.getDay()]+' '+dd+'/'+mm+'/'+yyyy);
+  }
+  const dayRange=days[0].trim()+' ถึง '+days[9].trim();
+
+  return chartHeader(cd,hiddenStr)+`
+
+=== READING REQUEST #5: 10-DAY WEEKLY FORECAST ===
+
+Forecast Period: ${dayRange}
+
+Target Audience: The subject whose BaZi chart is provided above.
+
+TASK:
+Analyze the influence of the current Annual Luck (流年), Monthly Luck (流月), and Daily Luck (流日) energies interacting with the subject's natal BaZi chart for the following 10-day period:
+
+${days.join('\n')}
+
+For EACH of the 10 days, provide a brief daily reading (2–3 sentences per category):
+
+REQUIRED OUTPUT FORMAT (repeat for each day):
+
+═══════════════════════════════════════
+📅 [วันที่ + วัน]
+───────────────────────────────────────
+💼 การงาน: [วิเคราะห์ด้านการงาน/ธุรกิจ/การตัดสินใจ]
+💰 การเงิน: [ดวงการเงิน รายรับ รายจ่าย การลงทุน]
+♥  ความรักและครอบครัว: [ความสัมพันธ์ การสื่อสาร บรรยากาศในครอบครัว]
+🏥 สุขภาพ: [ร่างกาย จิตใจ พลังงาน ข้อควรระวัง]
+🍀 โชคลาภและโอกาสพิเศษ: [สิ่งมงคล โอกาสที่ไม่ควรพลาด วันเฮงหรือวันระวัง]
+═══════════════════════════════════════
+
+After the 10 daily readings, add a SUMMARY section:
+
+═══════════════════════════════════════
+📊 สรุปภาพรวม 10 วัน
+───────────────────────────────────────
+✅ วันที่ดีที่สุดในช่วงนี้: [ระบุวัน + เหตุผล]
+⚠️  วันที่ต้องระวังมากที่สุด: [ระบุวัน + เหตุผล]
+📌 คำแนะนำสำคัญสำหรับช่วงนี้: [3–5 ข้อปฏิบัติที่เป็นรูปธรรม]
+🎯 โอกาสพิเศษที่ไม่ควรพลาด: [โอกาสทอง หรือสิ่งที่ควรเริ่มทำในช่วงนี้]
+═══════════════════════════════════════
+
+RULES:
+- All output MUST be in Thai language only
+- Be specific and actionable — avoid vague statements
+- Base analysis on the interaction between natal chart and current luck energies
+- Use the Day Master (${cd.dayMaster}) as the primary reference point
+- Current Great Luck Period context: ${curPStr}
+- Keep each daily section concise but meaningful (not too long, not too short)
+- Use the emoji icons exactly as shown in the format above`;
+}
+
+
+// Tab switching
+function switchTab(idx){
+  document.querySelectorAll('.ptab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.pblock').forEach((b,i)=>b.classList.toggle('show',i===idx));
+}
+
+// Copy prompt
+function copyPrompt(idx){
+  const text = window._prompts?.[idx]?.text||'';
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById(`copybtn-${idx}`);
+    btn.textContent='✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='⊕ Copy Prompt';btn.classList.remove('copied');},2000);
+  }).catch(()=>{
+    // fallback
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const btn=document.getElementById(`copybtn-${idx}`);
+    btn.textContent='✓ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='⊕ Copy Prompt';btn.classList.remove('copied');},2000);
+  });
+}
+
+
+
+// ─── Day max based on month/year ───
+function updateDayMax(){
+  const mm = parseInt(document.getElementById('mm').value)||1;
+  const yy = parseInt(document.getElementById('yy').value)||2500;
+  const yr_ce = yy - 543;
+  // Days per month (Gregorian)
+  const isLeap = (yr_ce%4===0 && yr_ce%100!==0) || yr_ce%400===0;
+  const daysInMonth = [31, isLeap?29:28, 31,30,31,30,31,31,30,31,30,31];
+  const maxDay = daysInMonth[(mm-1)] || 31;
+  const ddEl = document.getElementById('dd');
+  ddEl.max = maxDay;
+  if(parseInt(ddEl.value) > maxDay) ddEl.value = maxDay;
+}
+
+window.addEventListener('load',function(){updateDayMax();calc();});
+</script>
+</body>
+</html>
