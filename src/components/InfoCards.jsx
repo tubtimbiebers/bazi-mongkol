@@ -111,24 +111,20 @@ function VayjornTable({ result }) {
             const jsEb = jsE(dayStem, p.branch);
             const ss   = siangsae(dayStem, p.branch);
             
-            // Calculate exact start/end in months
-            const totalMoStart = Math.round(p.age * 12);
+            const totalMoStart = Math.floor(p.age * 12);
             const sYr = Math.floor(totalMoStart / 12);
             const sMo = totalMoStart % 12;
 
-            const totalMoEnd = Math.round((p.age + 10) * 12);
+            const totalMoEnd = Math.floor((p.age + 10) * 12);
             const eYr = Math.floor(totalMoEnd / 12);
             const eMo = totalMoEnd % 12;
 
             const ageStr = sMo > 0 ? `${sYr}ปี ${sMo}ด.` : `${sYr}ปี`;
             const endAgeStr = eMo > 0 ? `${eYr}ปี ${eMo}ด.` : `${eYr}ปี`;
 
-            // Calculate precise BE interval based on birth month
-            const startMonthIdx = (mon - 1) + totalMoStart;
-            const sy = birthBE + Math.floor(startMonthIdx / 12);
-            
-            const endMonthIdx = (mon - 1) + totalMoEnd;
-            const ey = birthBE + Math.floor(endMonthIdx / 12);
+            // Calculate precise BE interval
+            const sy = birthBE + Math.floor((totalMoStart + (mon - 1)) / 12);
+            const ey = birthBE + Math.floor((totalMoEnd + (mon - 1)) / 12);
 
             // Determine if it is the current period
             const now = new Date();
@@ -168,10 +164,8 @@ export default function InfoCards({ result }) {
   const dayStem = dp.stem;
   const mkHs = H[mk.stem], mkEb = E[mk.branch];
 
-  const sTotalMo = Math.round(startAge * 12);
-  const startYr = Math.floor(sTotalMo / 12);
-  const startMo = sTotalMo % 12;
-  const startAgeStr = startMo > 0 ? `${startYr} ปี ${startMo} เดือน` : `${startYr} ปี`;
+  const { y, m, d } = result.luckAge;
+  const startAgeStr = `${y} ปี ${m} เดือน ${d} วัน`;
 
   return (
     <>

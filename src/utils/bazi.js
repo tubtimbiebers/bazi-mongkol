@@ -31,9 +31,9 @@ export const E = {
 
 // Hidden stems [main, 2nd, 3rd]
 export const HIDDEN = {
-  1:[9],     2:[6,1,7], 3:[5,3,7], 4:[2],
-  5:[5,2,8], 6:[4,3,1], 7:[4],     8:[6,2,4],
-  9:[7,9,5], 10:[8],    11:[5,7,3],12:[9,5],
+  1:[10],     2:[6,10,8], 3:[1,3,5], 4:[2],
+  5:[5,2,10], 6:[3,7,5],  7:[4,6],   8:[6,4,2],
+  9:[7,9,5],  10:[8],     11:[5,8,4],12:[9,1],
 };
 
 // Ten Gods matrix [dayStem-1][otherStem-1]
@@ -185,7 +185,19 @@ export function hourPillar(dayStem, h) {
 const SS_START = { 1:12, 2:7, 3:3, 4:10, 5:3, 6:10, 7:6, 8:1, 9:9, 10:4 };
 export function siangsae(dayStem, branch) {
   const s = SS_START[dayStem];
+  const isYin = dayStem % 2 === 0;
+  if (isYin) {
+    return ((s - branch + 12) % 12) + 1;
+  }
   return ((branch - s + 12) % 12) + 1;
+}
+
+export function convertDaysToYMD(totalDays) {
+  const y = Math.floor(totalDays / 3);
+  const remDays = totalDays % 3;
+  const m = Math.floor(remDays * 4);
+  const d = Math.floor((remDays * 4 - m) * 30);
+  return { y, m, d };
 }
 
 // Ten Gods helpers
@@ -287,8 +299,9 @@ export function calculateBazi({ day, mon, yrBE, hr, mi, gdr }) {
     targetJieEx += diff * 365.2422;
   }
   
-  const diffDays = Math.abs(targetJieEx - exBirth);
-  const startAge = diffDays / 3;
+  const diffDays = Math.abs(targetJieEx - exBirth) + 1; // +1 day for inclusive counting (standard practice)
+  const lAge = convertDaysToYMD(diffDays);
+  const startAge = lAge.y + lAge.m / 12 + lAge.d / 365.25;
 
   const periods = vayjorn(mp.stem, mp.branch, dir, startAge);
   const nowBE   = new Date().getFullYear() + 543;
@@ -329,8 +342,10 @@ export function calculateBazi({ day, mon, yrBE, hr, mi, gdr }) {
     tDate: { y: tYr, m: tMon, d: tDay, h: tHr, mi: tMi },
     periods, nowBE, birthBE,
     startAge, dir,
+    luckAge: lAge,
     sartBigJD, sartSmlJD,
     L,
+    pDiff: Math.abs(targetJieEx - exBirth), // Keep raw for reference
     kongVuang: kv,
     kvStatus
   };
