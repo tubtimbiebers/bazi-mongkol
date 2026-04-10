@@ -26,7 +26,6 @@ export default function InputPanel({ onCalculate }) {
     onCalculate({ day: form.dd, mon: form.mm, yrBE: form.yy, hr: form.hh, mi: form.mn, gdr: form.gd });
   };
 
-  // Auto-calculate on mount
   useEffect(() => {
     onCalculate({ day: form.dd, mon: form.mm, yrBE: form.yy, hr: form.hh, mi: form.mn, gdr: form.gd });
   }, []);
@@ -43,47 +42,80 @@ export default function InputPanel({ onCalculate }) {
   ];
 
   return (
-    <form className="panel" onSubmit={handleSubmit}>
-      <div className="igrid">
-        <div className="ig">
-          <label>วัน</label>
-          <select name="dd" value={form.dd} onChange={handleChange}>
-            {days.map(d => <option key={d} value={d}>{d}</option>)}
-          </select>
+    <div className="animate-in" style={{ animationDelay: '0.2s' }}>
+      <form className="glass-panel panel" onSubmit={handleSubmit}>
+        <div style={{ 
+          position: 'absolute', 
+          top: '-14px', 
+          left: '24px', 
+          background: 'var(--primary)', 
+          padding: '2px 12px', 
+          borderRadius: '4px',
+          border: '1px solid var(--glass-border)',
+          fontSize: '0.7rem',
+          color: '#fff',
+          fontWeight: '700',
+          letterSpacing: '1px',
+          textTransform: 'uppercase'
+        }}>
+          กรอกข้อมูลวันเกิด
         </div>
-        <div className="ig">
-          <label>เดือน</label>
-          <select name="mm" value={form.mm} onChange={handleChange}>
-            {months.map(m => <option key={m.v} value={m.v}>{m.t}</option>)}
-          </select>
+
+        <div className="igrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '20px' }}>
+          <div className="ig">
+            <label>วัน</label>
+            <select name="dd" value={form.dd} onChange={handleChange}>
+              {days.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </div>
+          <div className="ig">
+            <label>เดือน</label>
+            <select name="mm" value={form.mm} onChange={handleChange}>
+              {months.map(m => <option key={m.v} value={m.v}>{m.t}</option>)}
+            </select>
+          </div>
+          <div className="ig">
+            <label>ปี พ.ศ.</label>
+            <select name="yy" value={form.yy} onChange={handleChange}>
+              {years.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+          </div>
+          <div className="ig">
+            <label>ชั่วโมง</label>
+            <select name="hh" value={form.hh} onChange={handleChange}>
+              {hours.map(h => <option key={h} value={h}>{String(h).padStart(2, '0')}</option>)}
+            </select>
+          </div>
+          <div className="ig">
+            <label>นาที</label>
+            <select name="mn" value={form.mn} onChange={handleChange}>
+              {minutes.map(m => <option key={m} value={m}>{String(m).padStart(2, '0')}</option>)}
+            </select>
+          </div>
+          <div className="ig">
+            <label>เพศ</label>
+            <select name="gd" value={form.gd} onChange={handleChange}>
+              <option value={1}>ชาย</option>
+              <option value={2}>หญิง</option>
+            </select>
+          </div>
         </div>
-        <div className="ig">
-          <label>ปี พ.ศ.</label>
-          <select name="yy" value={form.yy} onChange={handleChange}>
-            {years.map(y => <option key={y} value={y}>{y}</option>)}
-          </select>
-        </div>
-        <div className="ig">
-          <label>ชั่วโมง</label>
-          <select name="hh" value={form.hh} onChange={handleChange}>
-            {hours.map(h => <option key={h} value={h}>{String(h).padStart(2, '0')}</option>)}
-          </select>
-        </div>
-        <div className="ig">
-          <label>นาที</label>
-          <select name="mn" value={form.mn} onChange={handleChange}>
-            {minutes.map(m => <option key={m} value={m}>{String(m).padStart(2, '0')}</option>)}
-          </select>
-        </div>
-        <div className="ig">
-          <label>เพศ</label>
-          <select name="gd" value={form.gd} onChange={handleChange}>
-            <option value={1}>ชาย</option>
-            <option value={2}>หญิง</option>
-          </select>
-        </div>
-      </div>
-      <button type="submit" className="btn">⊕ คำนวณดวงชะตา</button>
-    </form>
+
+        <button type="submit" className="btn">
+          ⊕ คำนวณชะตาฟ้า
+        </button>
+      </form>
+      
+      <p style={{ 
+        textAlign: 'center', 
+        fontSize: '0.8rem', 
+        color: 'var(--primary-light)', 
+        opacity: 0.6, 
+        marginTop: '12px', 
+        fontStyle: 'italic' 
+      }}>
+        * หากไม่ทราบเวลาเกิดที่แน่นอน ให้เลือกเวลา 00:00
+      </p>
+    </div>
   );
 }

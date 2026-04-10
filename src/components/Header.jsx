@@ -1,39 +1,65 @@
 export default function Header() {
   return (
-    <header>
-      <div className="orn">✦ ✦ ✦</div>
-      <div className="h1th">ปาจื้อ ซาจู</div>
-      <h1>ดูดวงมงคลด้วยตัวเอง</h1>
-      <div className="orn" style={{fontSize:'.85rem'}}>八 字 命 盤</div>
-      <div className="hline"></div>
-      <div style={{marginTop:'10px',fontFamily:'Georgia,serif'}}>
-        <div style={{fontSize:'clamp(.85rem,2.5vw,1.1rem)',color:'var(--gold-l)',letterSpacing:'1px'}}>
-          โดย <span style={{color:'#fff',fontWeight:'600'}}>ซินแสนัท</span>
-        </div>
-        <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px',marginTop:'10px'}}>
-          <div style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'5px 18px',border:'1px solid rgba(212,168,67,.4)',borderRadius:'20px'}}>
-            <span style={{fontSize:'clamp(.72rem,2vw,.88rem)',color:'var(--gold)',letterSpacing:'1.5px'}}>📞 086-987-4656</span>
+    <header className="animate-in" style={{ position: 'relative', padding: '60px 0 40px' }}>
+      <div className="heading-secondary" style={{ marginBottom: '8px' }}>✦ ✦ ✦</div>
+      <div className="heading-secondary" style={{ fontSize: '0.9rem', opacity: 0.6 }}>ปาจื้อ ซาจู</div>
+      <h1 className="heading-primary">ดูดวงมงคลด้วยตัวเอง</h1>
+      <div className="heading-secondary" style={{ fontSize: '1rem', letterSpacing: '4px' }}>八 字 命 盤</div>
+
+      <div className="hline" style={{ width: '200px', height: '1px', background: 'linear-gradient(90deg, transparent, var(--primary), transparent)', margin: '24px auto' }}></div>
+
+      <div style={{ textAlign: 'center' }}>
+        <p style={{ fontSize: '1.2rem', color: 'var(--primary-light)' }}>
+          โดย <span style={{ color: '#fff', fontWeight: '700' }}>ซินแสนัท</span>
+        </p>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '20px', flexWrap: 'wrap' }}>
+          <div className="glass-panel" style={{ padding: '8px 20px', borderRadius: '40px', fontSize: '0.9rem', color: 'var(--primary-light)' }}>
+            📞 086-987-4656
           </div>
-          <div style={{display:'inline-flex',alignItems:'center',gap:'7px',padding:'5px 18px',border:'1px solid rgba(212,168,67,.4)',borderRadius:'20px'}}>
-            <svg width="16" height="16" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="12" fill="#06C755"/>
-              <path d="M24 8C15.16 8 8 14.28 8 22c0 4.94 2.94 9.28 7.38 11.96L14 40l6.44-3.38C21.54 36.86 22.76 37 24 37c8.84 0 16-6.28 16-14S32.84 8 24 8z" fill="white"/>
-              <path d="M17 24.5v-5h1.5v5H17zm3.5 0v-5H22v2h2v1.5h-2v1.5h-1.5zm4 0v-5H26c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-1.5zm1.5-3.5v2h.5c.28 0 .5-.22.5-.5v-1c0-.28-.22-.5-.5-.5H26zm3 3.5v-5h3.5V21H30v1h2v1.5h-2v1h2.5v1.5H30z" fill="#06C755"/>
+          <a
+            href="https://lin.ee/YHGY6OI"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-panel"
+            style={{ padding: '8px 20px', borderRadius: '40px', fontSize: '0.9rem', color: 'var(--primary-light)', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+          >
+            <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
+              <rect width="48" height="48" rx="12" fill="#06C755" />
+              <path d="M24 8C15.16 8 8 14.28 8 22c0 4.94 2.94 9.28 7.38 11.96L14 40l6.44-3.38C21.54 36.86 22.76 37 24 37c8.84 0 16-6.28 16-14S32.84 8 24 8z" fill="white" />
             </svg>
-            <span style={{fontSize:'clamp(.72rem,2vw,.88rem)',color:'var(--gold)',letterSpacing:'1.5px'}}>Line: @Royalnumber789</span>
-          </div>
+            Line: @Royalnumber789
+          </a>
         </div>
       </div>
 
-      {/* Donation box */}
-      <div className="donation-box">
-        <div style={{color:'var(--gold)',letterSpacing:'1px',marginBottom:'4px',fontSize:'.63rem'}}>🙏 ร่วมสนับสนุน</div>
-        <div style={{color:'var(--paper)',opacity:'.8',marginBottom:'4px'}}>ถ้าชอบ อยากร่วมสนับสนุนตามศรัทธา</div>
-        <div style={{height:'1px',background:'rgba(212,168,67,.25)',margin:'5px 0'}}></div>
-        <div style={{color:'var(--gold-l)',fontSize:'.6rem'}}>ธนาคารไทยพาณิชย์</div>
-        <div style={{color:'#fff',fontWeight:'700',letterSpacing:'1.5px',fontSize:'.75rem',margin:'2px 0'}}>095-273-6537</div>
-        <div style={{color:'var(--paper)',opacity:'.55',fontSize:'.58rem'}}>นายฐเดช ทับทิมรณยุทธ</div>
-        <div style={{color:'var(--gold)',opacity:'.5',fontSize:'.58rem',marginTop:'3px'}}>ขอบพระคุณครับ 🙏</div>
+      {/* Hero Header Support Box (Middle-Right Positioning) */}
+      <div className="glass-panel hov-scale" style={{
+        position: 'absolute',
+        right: '0',
+        top: '55%',
+        transform: 'translateY(-50%)',
+        width: '210px',
+        padding: '24px 20px',
+        fontSize: '0.75rem',
+        textAlign: 'center',
+        borderLeft: '4px solid var(--secondary)',
+        zIndex: 10,
+        boxShadow: 'var(--glass-shadow)',
+        marginRight: '-10px'
+      }}>
+        <div style={{ color: 'var(--secondary)', fontWeight: '800', marginBottom: '8px', letterSpacing: '1px', fontSize: '0.85rem' }}>
+          🙏 สนับสนุนซินแส
+        </div>
+        <p style={{ opacity: 0.7, marginBottom: '16px', lineHeight: '1.4' }}>ร่วมสืบทอดวิชาดวงจีน<br />ส่งเสริมวิทยาทาน</p>
+
+        <div style={{ background: 'rgba(5, 5, 30, 0.6)', borderRadius: '12px', padding: '14px 10px', border: '1px solid var(--glass-border)' }}>
+          <div style={{ color: 'var(--primary-light)', fontSize: '0.65rem', marginBottom: '6px', fontWeight: '600' }}>ธนาคารไทยพาณิชย์</div>
+          <div style={{ color: '#fff', fontWeight: '800', fontSize: '1rem', letterSpacing: '1px' }}>095-273-6537</div>
+          <p style={{ opacity: 0.6, fontSize: '0.65rem', marginTop: '8px' }}>นายฐเดช ทับทิมรณยุทธ</p>
+        </div>
+
+        <div style={{ color: 'var(--primary-light)', opacity: 0.5, fontSize: '0.65rem', marginTop: '12px' }}>ขอบพระคุณครับ 🙏</div>
       </div>
     </header>
   );

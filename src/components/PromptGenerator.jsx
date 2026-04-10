@@ -27,55 +27,104 @@ export default function PromptGenerator({ prompts }) {
   };
 
   return (
-    <>
-      <div className="sec">AI Prompt Generator · สร้าง Prompt ทำนายดวง</div>
+    <div className="animate-in" style={{ animationDelay: '1.4s' }}>
+      <div className="sec">AI Prompt Generator · พรอมต์ทำนายดวง</div>
 
-      <div className="howto">
-        <div className="howto-title">วิธีใช้งาน</div>
-        <div className="howto-steps">
+      <div className="glass-panel" style={{ padding: '24px', marginBottom: '24px', borderLeft: '4px solid var(--primary)' }}>
+        <div style={{ color: 'var(--primary-light)', fontVariant: 'small-caps', letterSpacing: '2px', fontWeight: '700', marginBottom: '16px', fontSize: '0.9rem' }}>
+          Instruction Guide / วิธีใช้งาน
+        </div>
+        <div className="howto-steps" style={{ display: 'grid', gap: '12px' }}>
           {[
-            ['กดปุ่ม ', '⊕ Copy Prompt', ' ในหัวข้อที่ต้องการ เพื่อคัดลอก prompt ไปยัง clipboard'],
-            ['เปิด AI ที่คุณใช้งาน เช่น ', 'ChatGPT', ' หรือ ', 'Google Gemini'],
-            ['วาง Prompt ลงในกล่องข้อความ ', 'พร้อมแนบรูปดวง', ' ที่เซฟไว้ด้วย'],
-            ['เลือก Model — ', 'ChatGPT:', ' ใช้ o3 หรือ GPT-4o · ', 'Gemini:', ' ใช้ Gemini 2.0 Flash Thinking'],
-            ['กด ', 'Generate', ' เพื่อดูคำทำนาย — ', 'ขอให้โชคดี ✦', ''],
+            ['Copy Prompt ที่ต้องการไปยัง Clipboard'],
+            ['แนบรูปดวงชะตา ไปยัง AI (ChatGPT/Gemini)'],
+            ['เลือก Model ระดับสูง (o3-mini / GPT-4o / Gemini 2.0 Flash Thinking)'],
+            ['กดส่งข้อมูลและรอรับคำทำนายเชิงลึก ✨'],
           ].map((parts, idx) => (
-            <div className="howto-step" key={idx}>
-              <span className="howto-num">{idx + 1}</span>
-              <span>
-                {parts.map((p, pi) => pi % 2 === 0
-                  ? <span key={pi}>{p}</span>
-                  : <span key={pi} className={pi === parts.length - 1 ? 'dim' : 'hl'}>{p}</span>
-                )}
-              </span>
+            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.85rem' }}>
+              <span style={{ 
+                width: '24px', 
+                height: '24px', 
+                borderRadius: '50%', 
+                background: 'var(--primary)', 
+                color: '#fff', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                fontWeight: '800',
+                fontSize: '0.75rem',
+                flexShrink: 0
+              }}>{idx + 1}</span>
+              <span style={{ opacity: 0.85 }}>{parts[0]}</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="prompt-sec">
-        <div className="prompt-tabs">
+      <div className="prompt-container">
+        <div className="prompt-tabs" style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '16px' }}>
           {PROMPT_LABELS.map((lbl, i) => (
-            <div key={i} className={`ptab${activeTab === i ? ' active' : ''}`} onClick={() => setActiveTab(i)}>
+            <button 
+              key={i} 
+              onClick={() => setActiveTab(i)}
+              style={{
+                padding: '10px 20px',
+                background: activeTab === i ? 'var(--primary)' : 'rgba(139, 41, 255, 0.05)',
+                color: '#fff',
+                border: activeTab === i ? 'none' : '1px solid var(--glass-border)',
+                borderRadius: '8px',
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '0.8rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'var(--transition-smooth)',
+                boxShadow: activeTab === i ? '0 4px 15px rgba(139, 41, 255, 0.4)' : 'none'
+              }}
+            >
               {lbl}
-            </div>
+            </button>
           ))}
         </div>
 
         {prompts.map((p, i) => (
           <div key={i} style={{ display: activeTab === i ? 'block' : 'none' }}>
-            <div className="pbox">{p.text}</div>
-            <div style={{ textAlign: 'center', marginTop: '8px' }}>
+            <div className="pbox" style={{ 
+              background: 'rgba(5, 5, 30, 0.7)', 
+              fontSize: '0.8rem', 
+              lineHeight: '1.8', 
+              maxHeight: '400px', 
+              overflowY: 'auto',
+              borderRadius: '16px',
+              border: '1px solid var(--glass-border)',
+              padding: '24px',
+              color: 'var(--paper)',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+              whiteSpace: 'pre-wrap',
+              boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.5)'
+            }}>
+              {p.text}
+            </div>
+            
+            <div style={{ textAlign: 'center', marginTop: '24px' }}>
               <button
-                className={`copy-btn${copiedIdx === i ? ' copied' : ''}`}
+                className={`btn ${copiedIdx === i ? 'copied' : ''}`}
                 onClick={() => handleCopy(i)}
+                style={{ 
+                  margin: '0 auto', 
+                  fontSize: '0.95rem', 
+                  padding: '14px 48px',
+                  background: copiedIdx === i ? '#00c853' : 'linear-gradient(135deg, var(--primary-light), var(--primary))',
+                  color: '#fff',
+                  boxShadow: copiedIdx === i ? '0 0 20px rgba(0,200,83,0.4)' : '0 8px 25px rgba(139, 41, 255, 0.4)'
+                }}
               >
-                {copiedIdx === i ? '✓ Copied!' : '⊕ Copy Prompt'}
+                {copiedIdx === i ? '✓ Copied Successfully!' : '⊕ Copy Prompt for AI'}
               </button>
             </div>
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
