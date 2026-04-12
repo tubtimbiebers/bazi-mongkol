@@ -1,6 +1,17 @@
 export default function Header() {
   return (
     <header className="animate-in" style={{ position: 'relative', padding: '60px 0 40px' }}>
+      {/* Logos */}
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <div style={{ color: 'var(--secondary)', fontSize: '1rem', fontWeight: '700', marginBottom: '14px', letterSpacing: '1px' }}>
+          ❖ รับรองโดย ❖
+        </div>
+        <div className="logo-row">
+          <img src="/logo1.png" alt="วิหารต้าเทียนเซียน" className="logo-img" />
+          <img src="/logo2.png" alt="มูลนิธิสว่างธรรมสุข" className="logo-img" />
+        </div>
+      </div>
+
       <div className="heading-secondary" style={{ marginBottom: '8px' }}>✦ ✦ ✦</div>
       <div className="heading-secondary" style={{ fontSize: '0.9rem', opacity: 0.6 }}>ปาจื้อ ซาจู</div>
       <h1 className="heading-primary">ดูดวงมงคลด้วยตัวเอง</h1>
@@ -33,21 +44,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Hero Header Support Box (Middle-Right Positioning) */}
-      <div className="glass-panel hov-scale" style={{
-        position: 'absolute',
-        right: '0',
-        top: '55%',
-        transform: 'translateY(-50%)',
-        width: '210px',
-        padding: '24px 20px',
-        fontSize: '0.75rem',
-        textAlign: 'center',
-        borderLeft: '4px solid var(--secondary)',
-        zIndex: 10,
-        boxShadow: 'var(--glass-shadow)',
-        marginRight: '-10px'
-      }}>
+      {/* Support Box – absolute on desktop, stacked on mobile (via CSS class) */}
+      <div className="glass-panel hov-scale support-box">
         <div style={{ color: 'var(--secondary)', fontWeight: '800', marginBottom: '8px', letterSpacing: '1px', fontSize: '0.85rem' }}>
           🙏 สนับสนุนซินแส
         </div>

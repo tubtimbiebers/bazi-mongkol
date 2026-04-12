@@ -67,6 +67,17 @@ export default function App() {
             <div className="animate-in" style={{ textAlign: 'center', margin: '60px 0 20px' }}>
               <div className="div-orn">✦ ✦ ✦</div>
               
+              <div style={{ maxWidth: '320px', margin: '30px auto', background: 'rgba(5, 5, 30, 0.6)', borderRadius: '16px', padding: '24px 20px', border: '1px solid var(--glass-border)', boxShadow: 'var(--glass-shadow)', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, var(--secondary), var(--primary))' }}></div>
+                <div style={{ color: 'var(--secondary)', fontWeight: '800', marginBottom: '16px', letterSpacing: '1px', fontSize: '0.9rem' }}>
+                  🙏 สนับสนุนซินแส
+                </div>
+                <div style={{ color: 'var(--primary-light)', fontSize: '0.75rem', marginBottom: '8px', fontWeight: '600' }}>ธนาคารไทยพาณิชย์</div>
+                <div style={{ color: '#fff', fontWeight: '800', fontSize: '1.25rem', letterSpacing: '2px' }}>095-273-6537</div>
+                <p style={{ opacity: 0.6, fontSize: '0.8rem', marginTop: '12px' }}>นายฐเดช ทับทิมรณยุทธ</p>
+                <div style={{ color: 'var(--primary-light)', opacity: 0.5, fontSize: '0.7rem', marginTop: '16px' }}>ร่วมสืบทอดวิชาดวงจีน / ขอบพระคุณครับ 🙏</div>
+              </div>
+
               <a
                 href="https://lin.ee/YHGY6OI"
                 target="_blank"

@@ -1,34 +1,5 @@
 import { H, E, HIDDEN, JN, SS, js, jsE, siangsae, fmtDate } from '../utils/bazi.js';
 
-function InfoCard({ title, rows }) {
-  return (
-    <div className="glass-panel icard hov-scale" style={{ padding: '24px', borderTop: '4px solid var(--primary)' }}>
-      <h4 style={{ 
-        fontFamily: 'Outfit, sans-serif', 
-        fontSize: '0.8rem', 
-        color: 'var(--primary-light)', 
-        letterSpacing: '2px', 
-        textTransform: 'uppercase',
-        marginBottom: '20px',
-        borderBottom: '1px solid var(--glass-border)',
-        paddingBottom: '10px'
-      }}>{title}</h4>
-      {rows.map((r, i) => (
-        <div className="irow" key={i} style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          padding: '8px 0', 
-          fontSize: '0.9rem',
-          borderBottom: i === rows.length - 1 ? 'none' : '1px solid rgba(255,255,255,0.03)'
-        }}>
-          <span className="ilbl" style={{ opacity: 0.5 }}>{r.label}</span>
-          <span className={`ival${r.hi ? ' hi' : ''}`} style={{ ...r.style, textAlign: 'right', fontWeight: r.hi ? '600' : '400' }}>{r.value}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function ZodiacGrid({ result }) {
   const { yp, mp, dp, hp, tYp, tMp, periods, nowBE, birthBE } = result;
 
@@ -130,75 +101,72 @@ function VayjornTable({ result }) {
   
   return (
     <div className="vt-wrap glass-panel animate-in" style={{ padding: '0', overflow: 'hidden', animationDelay: '1.2s' }}>
-      <table className="vt" style={{ borderCollapse: 'separate', borderSpacing: '0 8px', width: '100%', padding: '12px' }}>
-        <thead>
-          <tr style={{ background: 'transparent' }}>
-            <th style={{ padding: '12px 20px', borderRadius: '8px 0 0 8px' }}>ช่วงอายุ</th>
-            <th>ราศีฟ้า (Stem)</th>
-            <th>ราศีดิน (Branch)</th>
-            <th>จับซิ้งบน</th>
-            <th>จับซิ้งล่าง</th>
-            <th>เซี่ยงแซ</th>
-            <th style={{ borderRadius: '0 8px 8px 0' }}>ธาตุ</th>
-          </tr>
-        </thead>
-        <tbody>
-          {periods.map((p, i) => {
-            const hs   = H[p.stem], eb = E[p.branch];
-            const jsH  = js(dayStem, p.stem);
-            const jsEb = jsE(dayStem, p.branch);
-            const ss   = siangsae(dayStem, p.branch);
-            
-            const totalMoStart = Math.floor(p.age * 12);
-            const sYr = Math.floor(totalMoStart / 12);
-            const sMo = totalMoStart % 12;
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <table className="vt" style={{ borderCollapse: 'separate', borderSpacing: '0 6px', width: '100%', minWidth: '600px', padding: '12px 8px' }}>
+          <thead>
+            <tr style={{ background: 'transparent' }}>
+              <th style={{ padding: '10px 8px', fontSize: '0.75rem', borderRadius: '8px 0 0 8px', whiteSpace: 'nowrap' }}>ช่วงอายุ</th>
+              <th style={{ padding: '10px 4px', fontSize: '0.75rem' }}>ราศีฟ้า</th>
+              <th style={{ padding: '10px 4px', fontSize: '0.75rem' }}>ราศีดิน</th>
+              <th style={{ padding: '10px 4px', fontSize: '0.75rem' }}>จับซิ้งบน</th>
+              <th style={{ padding: '10px 4px', fontSize: '0.75rem' }}>จับซิ้งล่าง</th>
+              <th style={{ padding: '10px 4px', fontSize: '0.75rem' }}>เซี่ยงแซ</th>
+              <th style={{ padding: '10px 8px', fontSize: '0.75rem', borderRadius: '0 8px 8px 0' }}>ธาตุ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {periods.map((p, i) => {
+              const hs   = H[p.stem], eb = E[p.branch];
+              const jsH  = js(dayStem, p.stem);
+              const jsEb = jsE(dayStem, p.branch);
+              const ss   = siangsae(dayStem, p.branch);
+              
+              const totalMoStart = Math.floor(p.age * 12);
+              const sYr = Math.floor(totalMoStart / 12);
+              const sMo = totalMoStart % 12;
 
-            const totalMoEnd = Math.floor((p.age + 10) * 12);
-            const eYr = Math.floor(totalMoEnd / 12);
-            const eMo = totalMoEnd % 12;
+              const totalMoEnd = Math.floor((p.age + 10) * 12);
+              const eYr = Math.floor(totalMoEnd / 12);
+              const eMo = totalMoEnd % 12;
 
-            const ageStr = sMo > 0 ? `${sYr}.${sMo}` : `${sYr}`;
-            const endAgeStr = eMo > 0 ? `${eYr}.${eMo}` : `${eYr}`;
+              const sy = birthBE + Math.floor((totalMoStart + (mon - 1)) / 12);
+              const ey = birthBE + Math.floor((totalMoEnd + (mon - 1)) / 12);
 
-            const sy = birthBE + Math.floor((totalMoStart + (mon - 1)) / 12);
-            const ey = birthBE + Math.floor((totalMoEnd + (mon - 1)) / 12);
+              const now = new Date();
+              const nowBE = now.getFullYear() + 543;
+              const curMonthsElapsed = (nowBE - birthBE) * 12 + now.getMonth() - (mon - 1);
+              const cur = curMonthsElapsed >= totalMoStart && curMonthsElapsed < totalMoEnd;
 
-            const now = new Date();
-            const nowBE = now.getFullYear() + 543;
-            const curMonthsElapsed = (nowBE - birthBE) * 12 + now.getMonth() - (mon - 1);
-            const cur = curMonthsElapsed >= totalMoStart && curMonthsElapsed < totalMoEnd;
-
-            return (
-              <tr key={i} className={cur ? 'now' : ''} style={{ 
-                background: cur ? 'rgba(139, 41, 255, 0.25)' : 'rgba(255,255,255,0.02)',
-                transition: 'var(--transition-smooth)'
-              }}>
-                <td style={{ textAlign: 'left', padding: '16px 20px', borderRadius: '12px 0 0 12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <span className="vt-age" style={{ fontSize: '1.2rem', fontWeight: '700', color: cur ? '#fff' : 'var(--paper)' }}>{ageStr}–{endAgeStr}</span>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                       <span className="vt-yr" style={{ fontSize: '0.75rem', opacity: 0.6 }}>พ.ศ. {sy}–{ey}</span>
-                       {cur && <span style={{ color: 'var(--secondary)', fontSize: '0.65rem', fontWeight: '900', letterSpacing: '1px' }}>CURRENT</span>}
+              return (
+                <tr key={i} className={cur ? 'now' : ''} style={{ 
+                  background: cur ? 'rgba(139, 41, 255, 0.25)' : 'rgba(255,255,255,0.02)',
+                  transition: 'var(--transition-smooth)'
+                }}>
+                  <td style={{ textAlign: 'left', padding: '12px 8px', borderRadius: '10px 0 0 10px', minWidth: '110px' }}>
+                    <div style={{ fontWeight: '700', fontSize: '0.9rem', color: cur ? '#fff' : 'var(--paper)', lineHeight: 1.3 }}>
+                      {sYr} ปี {sMo > 0 ? `${sMo} ด.` : ''} –<br/>{eYr} ปี {eMo > 0 ? `${eMo} ด.` : ''}
                     </div>
-                  </div>
-                </td>
-                <td style={{ padding: '16px 8px' }}>
-                  <span className={`vt-cn ${hs.c}`} style={{ fontSize: '1.6rem', fontWeight: '800' }}>{hs.cn}</span>
-                  <span className="vt-th" style={{ display: 'block', fontSize: '0.85rem' }}>{hs.th}</span>
-                </td>
-                <td style={{ padding: '16px 8px' }}>
-                  <span className={`vt-cn ${eb.c}`} style={{ fontSize: '1.6rem', fontWeight: '800' }}>{eb.cn}</span>
-                  <span className="vt-th" style={{ display: 'block', fontSize: '0.85rem' }}>{eb.th} {eb.an}</span>
-                </td>
-                <td className="vt-js" style={{ fontWeight: '700', color: 'var(--primary-light)' }}>{jsH ? JN[jsH].th : '—'}</td>
-                <td className="vt-js" style={{ fontWeight: '700', color: 'var(--primary-light)' }}>{jsEb ? JN[jsEb].th : '—'}</td>
-                <td className="vt-js" style={{ fontSize: '0.8rem', opacity: 0.8 }}>{SS[ss] || '—'}</td>
-                <td style={{ fontSize: '0.75rem', color: 'var(--primary-light)', borderRadius: '0 12px 12px 0' }}>{hs.el}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    <div style={{ fontSize: '0.65rem', opacity: 0.55, marginTop: '3px' }}>พ.ศ. {sy}–{ey}</div>
+                    {cur && <span style={{ color: 'var(--secondary)', fontSize: '0.6rem', fontWeight: '900', letterSpacing: '1px' }}>CURRENT</span>}
+                  </td>
+                  <td style={{ padding: '12px 6px', textAlign: 'center' }}>
+                    <span className={`vt-cn ${hs.c}`} style={{ fontSize: '1.4rem', fontWeight: '800', display: 'block' }}>{hs.cn}</span>
+                    <span style={{ display: 'block', fontSize: '0.7rem', opacity: 0.8 }}>{hs.th}</span>
+                  </td>
+                  <td style={{ padding: '12px 6px', textAlign: 'center' }}>
+                    <span className={`vt-cn ${eb.c}`} style={{ fontSize: '1.4rem', fontWeight: '800', display: 'block' }}>{eb.cn}</span>
+                    <span style={{ display: 'block', fontSize: '0.7rem', opacity: 0.8 }}>{eb.th} {eb.an}</span>
+                  </td>
+                  <td style={{ padding: '12px 4px', textAlign: 'center', fontSize: '0.75rem', fontWeight: '700', color: 'var(--primary-light)' }}>{jsH ? JN[jsH].th : '—'}</td>
+                  <td style={{ padding: '12px 4px', textAlign: 'center', fontSize: '0.75rem', fontWeight: '700', color: 'var(--primary-light)' }}>{jsEb ? JN[jsEb].th : '—'}</td>
+                  <td style={{ padding: '12px 4px', textAlign: 'center', fontSize: '0.7rem', opacity: 0.8 }}>{SS[ss] || '—'}</td>
+                  <td style={{ padding: '12px 6px', textAlign: 'center', fontSize: '0.7rem', color: 'var(--primary-light)', borderRadius: '0 10px 10px 0' }}>{hs.el}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -216,33 +184,93 @@ export default function InfoCards({ result }) {
   const { y, m, d } = result.luckAge;
   const startAgeStr = `${y} ปี ${m} เดือน ${d} วัน`;
 
+  const profileSections = [
+    {
+      title: 'Birth Profile',
+      color: 'var(--primary)',
+      rows: [
+        { label: 'Date', value: `${day}/${mon}/${yr + 543}` },
+        { label: 'Time', value: `${String(hr).padStart(2,'0')}:${String(mi).padStart(2,'0')} น.` },
+        { label: 'Gender', value: gdr === 1 ? 'ชาย (Male)' : 'หญิง (Female)' },
+        { label: 'Pillar', value: `${H[yp.stem].th}${E[yp.branch].th}`, hi: true },
+      ]
+    },
+    {
+      title: 'Life Palace (เหมี่ยเก็ง)',
+      color: '#00d2ff',
+      rows: [
+        { label: 'Sign', value: `${mkHs.th}${mkEb.th} (${mkHs.cn}${mkEb.cn})`, hi: true },
+        { label: 'Status', value: result.kvStatus.mk ? 'คงบ๊วง 空亡' : 'ปกติ', style: { color: result.kvStatus.mk ? '#ff6b6b' : 'inherit' } },
+        { label: 'Element', value: mkHs.el },
+        { label: 'Ten Gods', value: `${JN[mk.jsH]?.th || '—'} / ${JN[mk.jsEb]?.th || '—'}` },
+      ]
+    },
+    {
+      title: 'Solar Terms & Luck',
+      color: '#ffaa00',
+      rows: [
+        { label: 'Big Term', value: fmtDate(sartBigJD), style: { fontSize: '0.75rem' } },
+        { label: 'Small Term', value: fmtDate(sartSmlJD), style: { fontSize: '0.75rem' } },
+        { label: 'Luck Start', value: `อายุ ${startAgeStr}`, hi: true },
+        { label: 'Direction', value: dir === 1 ? 'Forward (順)' : 'Reverse (逆)' },
+      ]
+    },
+    {
+      title: 'Day Master (ดิถี)',
+      color: 'var(--secondary)',
+      rows: [
+        { label: 'DM ราศีวัน', value: `${H[dayStem].th} ${H[dayStem].cn}`, hi: true },
+        { label: 'Element', value: H[dayStem].el },
+        { label: 'Phase', value: SS[siangsae(dayStem, dp.branch)] },
+        { label: 'Kong Vuang', value: `${E[result.kongVuang[0]].th}${E[result.kongVuang[0]].cn} - ${E[result.kongVuang[1]].th}${E[result.kongVuang[1]].cn}`, hi: true },
+      ]
+    },
+  ];
+
   return (
     <div className="animate-in" style={{ animationDelay: '0.6s' }}>
-      <div className="info-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginTop: '40px' }}>
-        <InfoCard title="Birth Profile" rows={[
-          { label: 'Date', value: `${day}/${mon}/${yr + 543}` },
-          { label: 'Time', value: `${String(hr).padStart(2,'0')}:${String(mi).padStart(2,'0')} น.` },
-          { label: 'Gender', value: gdr === 1 ? 'ชาย (Male)' : 'หญิง (Female)' },
-          { label: 'Pillar', value: `${H[yp.stem].th}${E[yp.branch].th}`, hi: true },
-        ]} />
-        <InfoCard title="Life Palace (เหมี่ยเก็ง)" rows={[
-          { label: 'Sign', value: `${mkHs.th}${mkEb.th} (${mkHs.cn}${mkEb.cn})`, hi: true },
-          { label: 'Status', value: result.kvStatus.mk ? 'คงบ๊วง 空亡' : 'ปกติ', style: { color: result.kvStatus.mk ? '#ff6b6b' : 'inherit' } },
-          { label: 'Element', value: mkHs.el },
-          { label: 'Ten Gods', value: `${JN[mk.jsH]?.th || '—'} / ${JN[mk.jsEb]?.th || '—'}` },
-        ]} />
-        <InfoCard title="Solar Terms & Luck" rows={[
-          { label: 'Big Term', value: fmtDate(sartBigJD), style: { fontSize: '0.75rem' } },
-          { label: 'Small Term', value: fmtDate(sartSmlJD), style: { fontSize: '0.75rem' } },
-          { label: 'Luck Start', value: `อายุ ${startAgeStr}`, hi: true },
-          { label: 'Direction', value: dir === 1 ? 'Forward (順)' : 'Reverse (逆)' },
-        ]} />
-        <InfoCard title="Day Master (ดิถี)" rows={[
-          { label: 'DM ราศีวัน', value: `${H[dayStem].th} ${H[dayStem].cn}`, hi: true },
-          { label: 'Element', value: H[dayStem].el },
-          { label: 'Phase', value: SS[siangsae(dayStem, dp.branch)] },
-          { label: 'Kong Vuang', value: `${E[result.kongVuang[0]].th}${E[result.kongVuang[0]].cn} - ${E[result.kongVuang[1]].th}${E[result.kongVuang[1]].cn}`, hi: true },
-        ]} />
+      {/* Master Profile Block — all 4 sections in one frame */}
+      <div className="glass-panel master-profile" style={{ marginTop: '40px', padding: '0', overflow: 'hidden', borderTop: '4px solid var(--primary)' }}>
+        <div style={{
+          padding: '16px 20px 8px',
+          fontFamily: 'Outfit, sans-serif',
+          fontSize: '0.75rem',
+          color: 'var(--primary-light)',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          borderBottom: '1px solid var(--glass-border)',
+          marginBottom: '4px'
+        }}>
+          ดวงชะตาโดยรวม (Profile Summary)
+        </div>
+        <div className="profile-grid">
+          {profileSections.map((sec, si) => (
+            <div key={si} className="profile-section" style={{ borderTop: `3px solid ${sec.color}` }}>
+              <h4 style={{
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '0.72rem',
+                color: sec.color,
+                letterSpacing: '1.5px',
+                textTransform: 'uppercase',
+                marginBottom: '12px',
+                paddingBottom: '8px',
+                borderBottom: '1px solid var(--glass-border)',
+              }}>{sec.title}</h4>
+              {sec.rows.map((r, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '6px 0',
+                  fontSize: '0.82rem',
+                  borderBottom: i === sec.rows.length - 1 ? 'none' : '1px solid rgba(255,255,255,0.03)'
+                }}>
+                  <span style={{ opacity: 0.5, flexShrink: 0, marginRight: '8px' }}>{r.label}</span>
+                  <span style={{ ...r.style, textAlign: 'right', fontWeight: r.hi ? '600' : '400', color: r.hi ? '#fff' : 'inherit' }}>{r.value}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="sec animate-in" style={{ animationDelay: '0.9s', marginTop: '60px' }}>🎴 นักษัตรและฤดูกาล (Zodiac Map)</div>
