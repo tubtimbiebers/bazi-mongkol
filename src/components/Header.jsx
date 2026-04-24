@@ -7,7 +7,19 @@ export default function Header() {
           ❖ รับรองโดย ❖
         </div>
         <div className="logo-row">
-          <img src="/logo1.png" alt="วิหารต้าเทียนเซียน" className="logo-img" />
+          <img
+            src="/logo1.jpg"
+            alt="วิหารต้าเทียนเซียน"
+            className="logo-img"
+            style={{ 
+              width: '150px', 
+              height: '150px', 
+              background: '#fff', 
+              padding: '4px', 
+              borderRadius: '32px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+            }}
+          />
           <img src="/logo2.png" alt="มูลนิธิสว่างธรรมสุข" className="logo-img" />
         </div>
       </div>
